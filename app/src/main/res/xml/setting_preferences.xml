@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+   <PreferenceCategory
+       android:title="CLOUD SERVICES"
+       >
+
+      <Preference
+          android:icon="@drawable/forward_arrow"
+          android:title="Xiaomi Cloud"
+          android:summary="Synced with the cloud"
+          />
+       <Preference
+           android:title="Deleted notes in the cloud"
+           android:icon="@drawable/forward_arrow"
+           />
+   </PreferenceCategory>
+
+       <PreferenceCategory
+           android:title="STYLE">
+
+           <ListPreference
+               android:defaultValue="Medium"
+               app:entries="@array/font_list"
+               android:entryValues="@array/font_list"
+                android:key="font_key"
+               android:icon="@drawable/img"
+               android:title="Font size"
+               />
+           <ListPreference
+               android:key="Sort"
+               android:defaultValue="By creation date"
+               app:entries="@array/sort_list"
+               android:entryValues="@array/sort_list"
+               android:title="Sort"
+               android:icon="@drawable/img"
+               />
+
+           <PreferenceCategory
+               android:title="QUICK FEATURES">
+
+               <Preference
+
+                   android:icon="@drawable/forward_arrow"
+                   android:title="Quick notes"
+                   />
+
+
+
+           </PreferenceCategory>
+<PreferenceCategory
+    android:title="REMINDERS">
+
+    <SwitchPreference
+            android:title="High-priority reminders
+                            "
+        android:summary="Play sound even when Silent or
+                            DND mode is on"
+        />
+
+</PreferenceCategory>
+
+   </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="OTHER">
+        <Preference
+            android:icon="@drawable/forward_arrow"
+            android:title="Privacy Policy"
+            />
+
+    </PreferenceCategory>
+
+
+
+
+
+
+</PreferenceScreen>
