@@ -1,9 +1,12 @@
 package com.sxi.notes;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.appbar.AppBarLayout;
@@ -46,4 +49,19 @@ public class MainActivity extends AppCompatActivity {
 */
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuItem settings = menu.add("Settings");
+        settings.setIcon(R.drawable.outline_settings_24);
+        settings.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getTitle().equals("Settings")){
+            startActivity(new Intent(getApplicationContext(),SettingAv.class));
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
