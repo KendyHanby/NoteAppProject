@@ -6,11 +6,11 @@ android {
     buildFeatures{
         viewBinding true
     }
-    namespace 'com.example.setting_features'
+    namespace 'com.sxi.notes'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.setting_features"
+        applicationId "com.sxi.notes"
         minSdk 24
         targetSdk 33
         versionCode 1

@@ -1,6 +1,5 @@
-package com.example.setting_features;
+package com.sxi.notes;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;

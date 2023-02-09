@@ -1,4 +1,4 @@
-package com.example.setting_features;
+package com.sxi.notes;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.setting_features.databinding.ActivityMainBinding;
+import com.sxi.notes.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
         ActivityMainBinding binding;

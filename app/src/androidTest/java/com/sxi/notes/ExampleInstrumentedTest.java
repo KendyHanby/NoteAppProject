@@ -1,4 +1,4 @@
-package com.example.setting_features;
+package com.sxi.notes;
 
 import android.content.Context;
 
