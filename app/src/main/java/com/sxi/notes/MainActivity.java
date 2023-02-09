@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +14,9 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.sxi.notes.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
+
+    SQLiteDatabase db;
+    MySqlHelper mySqlHelper;
     private ActivityMainBinding binding;
 
     @Override
@@ -39,6 +43,12 @@ public class MainActivity extends AppCompatActivity {
                 binding.tabTool.setVisibility(View.GONE);
             }
         });
+
+        //Building SQLiteDatabase
+       mySqlHelper = new MySqlHelper(getApplicationContext());
+        db = mySqlHelper.getWritableDatabase();
+
+
 /*
         binding.iv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,4 +74,31 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+
+  /*
+        private void addDataToSqlDatabase(){
+        String txt = xxx.getText().toString();
+
+        mySqlHelper.dbOpen();
+        long id = mySqlHelper.dataInsert(txt);
+        mySqlHelper.dbclose();
+        if(id < 0){
+        Toast.makeText(getApplicationContext(),"Something went wrong",Toast.LENGTH_LONG).show();
+        }else{
+        Toast.makeText(getApplicationContext(),"Successfully",Toast.LENGTH_LONG).show();
+        }
+        }
+    */
+
+    /*
+           private void startQuery(){
+           mySqlHelper.dbOpen();
+           String st = mySqlHelper.dataQuery()
+           mySqlHelper.dbclose();
+
+           }
+
+     */
 }
