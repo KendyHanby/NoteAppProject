@@ -9,7 +9,8 @@ import android.view.View;
 import com.sxi.notes.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
-        ActivityMainBinding binding;
+    private ActivityMainBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,11 +18,12 @@ public class MainActivity extends AppCompatActivity {
         View v = binding.getRoot();
         setContentView(v);
 
-
+        setSupportActionBar(binding.toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         binding.iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,SettingAv.class));
+                startActivity(new Intent(MainActivity.this, SettingAv.class));
             }
         });
     }
