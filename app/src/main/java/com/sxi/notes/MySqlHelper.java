@@ -42,7 +42,11 @@ public class MySqlHelper extends SQLiteOpenHelper {
     public long saveNote(NoteModel noteModel){
         sqdb = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        return 0;
+        values.put(TITLE,noteModel.getTitle());
+        values.put(TEXT,noteModel.getText());
+        values.put(DATE,noteModel.getDate());
+        values.put(THEME,noteModel.getTheme());
+        return sqdb.insert("notes",null,values);
     }
 
     /**
