@@ -52,16 +52,6 @@ public class MainActivity extends AppCompatActivity {
         //Building SQLiteDatabase
        mySqlHelper = new MySqlHelper(getApplicationContext());
         db = mySqlHelper.getWritableDatabase();
-
-
-/*
-        binding.iv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, SettingAv.class));
-            }
-        });
-*/
     }
 
     @Override

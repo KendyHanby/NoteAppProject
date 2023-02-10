@@ -39,10 +39,31 @@ public class MySqlHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    public long saveNote(NoteModel noteModel){
+    /**Save new note to database*/
+    public long saveNote(NoteModel model){
         sqdb = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        return 0;
+        values.put(TITLE,model.getTitle());
+        values.put(TEXT,model.getText());
+        values.put(DATE,model.getDate());
+        values.put(THEME,model.getTheme());
+        return sqdb.insert("notes",null,values);
+    }
+
+    public long editNote(long id,NoteModel model){
+        sqdb = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(TITLE,model.getTitle());
+        values.put(TEXT,model.getText());
+        values.put(DATE,model.getDate());
+        values.put(THEME,model.getTheme());
+        return sqdb.update("notes",values,"id="+id,null);
+    }
+
+    /**Delete note from database*/
+    public void deleteNote(long id){
+        sqdb = this.getWritableDatabase();
+        sqdb.delete("notes","id="+id,null);
     }
 
     /**
