@@ -49,6 +49,11 @@ public class MySqlHelper extends SQLiteOpenHelper {
         return sqdb.insert("notes",null,values);
     }
 
+    public void deleteNote(long id){
+        sqdb = this.getWritableDatabase();
+        sqdb.delete("notes","id="+id,null);
+    }
+
     /**
      * Don't need to use it
      */
