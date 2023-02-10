@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +25,7 @@ public class NoteEditorActivity extends AppCompatActivity {
 
     private ActivityNoteEditorBinding binding;
     private long date;
+    private String dc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +45,26 @@ public class NoteEditorActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("MMMM dd h:mm", Locale.US);
         date = calendar.getTimeInMillis();
-        binding.date.setText(format.format(calendar.getTime()));
+        dc = format.format(calendar.getTime());
+        binding.date.setText(dc.concat("| 0 Characters"));
 
+        binding.editorText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                int length = charSequence.toString().trim().length();
+                binding.date.setText(String.format(dc.concat("| %s Characters"), length));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     @Override
