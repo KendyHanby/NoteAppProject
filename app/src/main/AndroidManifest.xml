@@ -14,13 +14,28 @@
         <activity
             android:name=".NoteEditorActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity"/>
+            android:configChanges="screenLayout|screenSize|smallestScreenSize|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"
+            tools:ignore="LockedOrientationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".SettingAv"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="screenLayout|screenSize|smallestScreenSize|keyboardHidden"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:configChanges="screenLayout|screenSize|smallestScreenSize|keyboardHidden"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
