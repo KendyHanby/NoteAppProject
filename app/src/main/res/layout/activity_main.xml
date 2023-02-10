@@ -34,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@android:color/transparent"
-                    android:visibility="gone"
+                    app:tabIconTint="@color/tab_color_state"
                     app:tabGravity="center"
                     app:tabIndicatorHeight="0dp"
                     app:tabInlineLabel="false"
@@ -52,30 +52,6 @@
                         android:icon="@drawable/temp_outline_task_24" />
                 </com.google.android.material.tabs.TabLayout>
             </androidx.appcompat.widget.Toolbar>
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|start"
-                android:background="@android:color/transparent"
-                app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="1"
-                app:tabGravity="center"
-                app:tabIndicatorHeight="0dp"
-                app:tabInlineLabel="false"
-                app:tabMode="fixed">
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:icon="@drawable/temp_outline_note_24" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:icon="@drawable/temp_outline_task_24" />
-            </com.google.android.material.tabs.TabLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 

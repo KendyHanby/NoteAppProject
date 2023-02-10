@@ -1,5 +1,7 @@
 package com.sxi.notes;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +13,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
@@ -21,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
     SQLiteDatabase db;
     MySqlHelper mySqlHelper;
     private ActivityMainBinding binding;
+    private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        Toast.makeText(this, String.valueOf(result.getResultCode()), Toast.LENGTH_SHORT).show();
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,26 +38,17 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        binding.appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
-            int range = appBarLayout.getTotalScrollRange();
-            boolean isCollapse = false;
-            if (range+verticalOffset==0){
-                isCollapse=true;
-            } else if (isCollapse) {
-                isCollapse = false;
-            }
-            if (isCollapse){
-                binding.tabTool.setVisibility(View.VISIBLE);
-            }else {
-                binding.tabTool.setVisibility(View.GONE);
-            }
-        });
+        // We don't use it. It mess up code.
         //Icon selected color
-        setupTabIcons();
+        //setupTabIcons();
 
         //Building SQLiteDatabase
-       mySqlHelper = new MySqlHelper(getApplicationContext());
+        mySqlHelper = new MySqlHelper(getApplicationContext());
         db = mySqlHelper.getWritableDatabase();
+
+        binding.mainFab.setOnClickListener(view -> {
+            launcher.launch(new Intent(getApplicationContext(),NoteEditorActivity.class));
+        });
     }
 
     @Override
@@ -64,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getTitle().equals("Settings")){
-            startActivity(new Intent(getApplicationContext(),SettingAv.class));
+        if (item.getTitle().equals("Settings")) {
+            startActivity(new Intent(getApplicationContext(), SettingAv.class));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -94,17 +91,15 @@ public class MainActivity extends AppCompatActivity {
            mySqlHelper.dbclose();
 
            }
-
      */
+    @Deprecated
+    /**Using Color State List is better*/
     private void setupTabIcons() {
 
+        binding.tabTool.getTabAt(0).getIcon().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN);
+        binding.tabTool.getTabAt(1).getIcon().setColorFilter(Color.parseColor("#a8a8a8"), PorterDuff.Mode.SRC_IN);
 
-
-        binding.tab.getTabAt(0).getIcon().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN);
-        binding.tab.getTabAt(1).getIcon().setColorFilter(Color.parseColor("#a8a8a8"), PorterDuff.Mode.SRC_IN);
-
-
-        binding.tab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        binding.tabTool.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 tab.getIcon().setColorFilter(getColor(R.color.selected_color), PorterDuff.Mode.SRC_IN);
