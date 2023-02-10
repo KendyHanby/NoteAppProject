@@ -25,7 +25,13 @@ public class MainActivity extends AppCompatActivity {
     MySqlHelper mySqlHelper;
     private ActivityMainBinding binding;
     private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        Toast.makeText(this, String.valueOf(result.getResultCode()), Toast.LENGTH_SHORT).show();
+        if (result.getResultCode()==RESULT_OK) {
+            Toast.makeText(this, result.getData().getStringExtra("title") + "\n" + result.getData().getStringExtra("text") + "\n" + result.getResultCode(), Toast.LENGTH_SHORT).show();
+        } else if (result.getResultCode()==RESULT_CANCELED){
+            Toast.makeText(this, "Cancel note", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Others Error", Toast.LENGTH_SHORT).show();
+        }
     });
 
     @Override
