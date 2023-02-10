@@ -42,13 +42,13 @@
 
                     <!--TODO : Change Icon-->
                     <com.google.android.material.tabs.TabItem
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:icon="@drawable/temp_outline_note_24" />
 
                     <com.google.android.material.tabs.TabItem
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:icon="@drawable/temp_outline_task_24" />
                 </com.google.android.material.tabs.TabLayout>
             </androidx.appcompat.widget.Toolbar>
@@ -67,13 +67,13 @@
                 app:tabMode="fixed">
 
                 <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:icon="@drawable/temp_outline_note_24" />
 
                 <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:icon="@drawable/temp_outline_task_24" />
             </com.google.android.material.tabs.TabLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -97,5 +97,5 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="30dp"
         android:src="@drawable/baseline_add_24"
-        app:backgroundTint="#FAB600" />
+        app:backgroundTint="#DDCA20" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
