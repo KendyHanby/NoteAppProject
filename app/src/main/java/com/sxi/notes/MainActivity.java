@@ -1,11 +1,5 @@
 package com.sxi.notes;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager2.widget.ViewPager2;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -13,33 +7,19 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.sxi.notes.adapter.MainPagerAdapter;
 import com.sxi.notes.databinding.ActivityMainBinding;
-import com.sxi.notes.model.NoteModel;
 
 public class MainActivity extends AppCompatActivity {
 
     MySqlHelper db;
     private ActivityMainBinding binding;
-    private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode()==RESULT_OK) {
-            Bundle bundle = result.getData().getExtras();
-            String title= bundle.getString("title")
-                    ,text=bundle.getString("text");
-            long date=bundle.getLong("date");
-            int theme=bundle.getInt("theme");
-            if (db.saveNote(new NoteModel(title,text,date,theme))!=-1){
-                Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
-            }
-        } else if (result.getResultCode()==RESULT_CANCELED){
-            Toast.makeText(this, "Cancel note", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Others Error", Toast.LENGTH_SHORT).show();
-        }
-    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         binding.tabTool.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                binding.mainPager.setCurrentItem(tab.getPosition(),true);
+                binding.mainPager.setCurrentItem(tab.getPosition(), true);
             }
 
             @Override
@@ -81,10 +61,6 @@ public class MainActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
-        });
-
-        binding.mainFab.setOnClickListener(view -> {
-            launcher.launch(new Intent(getApplicationContext(),NoteEditorActivity.class));
         });
     }
 

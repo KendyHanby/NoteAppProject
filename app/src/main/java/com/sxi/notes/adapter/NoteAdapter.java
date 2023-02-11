@@ -1,7 +1,6 @@
 package com.sxi.notes.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sxi.notes.MySqlHelper;
 import com.sxi.notes.R;
-import com.sxi.notes.Utils;
 import com.sxi.notes.model.NoteModel;
 
 import java.text.SimpleDateFormat;
@@ -23,22 +21,24 @@ import java.util.Locale;
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
 
     private List<NoteModel> list;
+    private Context context;
 
     public NoteAdapter(Context context) {
+        this.context = context;
         list = new MySqlHelper(context).getNotes();
     }
 
     @NonNull
     @Override
     public NoteVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new NoteVH(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_note_item,parent,false));
+        return new NoteVH(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_note_item, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull NoteVH holder, int position) {
         holder.title.setText(list.get(position).getTitle());
         holder.text.setText(list.get(position).getText());
-        holder.date.setText(new SimpleDateFormat("hh:mm MMM d yyyy",Locale.US).format(new Date(list.get(position).getDate())));
+        holder.date.setText(new SimpleDateFormat("hh:mm MMM d yyyy", Locale.US).format(new Date(list.get(position).getDate())));
     }
 
     @Override
@@ -47,7 +47,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
     }
 
     class NoteVH extends RecyclerView.ViewHolder {
-        TextView title,text,date;
+        TextView title, text, date;
+
         public NoteVH(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.note_title);

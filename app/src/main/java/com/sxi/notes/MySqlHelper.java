@@ -14,12 +14,10 @@ import java.util.List;
 public class MySqlHelper extends SQLiteOpenHelper {
     private SQLiteDatabase sqdb;
     Context context;
-    private static final String DB_NAME = "Mi_NoteDB.db";
+    private static final String NOTES_DB = "notes.db";
+
     private static final int DB_VERSION = 1;
     private static final String TEXT = "text";
-    private static final String TB_NAME = "notes";
-    private static final String TEXT_ID = "id";
-
     private static final String ID = "id";
     private static final String TITLE = "title";
     private static final String FOLDER = "text";
@@ -28,106 +26,68 @@ public class MySqlHelper extends SQLiteOpenHelper {
 
 
     public MySqlHelper(Context context) {
-        super(context, DB_NAME, null, DB_VERSION);
+        super(context, NOTES_DB, null, DB_VERSION);
         this.context = context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String query = "CREATE TABLE notes(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, text TEXT,date LONG, theme INTEGER);";
-        sqLiteDatabase.execSQL(query);
+        String noteQuery = "CREATE TABLE notes(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, text TEXT,date LONG, theme INTEGER);";
+        String taskQuery = "CREATE TABLE tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, task TEXT,reminder long);";
+        sqLiteDatabase.execSQL(noteQuery);
+        sqLiteDatabase.execSQL(taskQuery);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS notes");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS tasks");
         onCreate(sqLiteDatabase);
     }
 
-    /**Save new note to database*/
-    public long saveNote(NoteModel model){
+    /**
+     * Save new note to database
+     */
+    public long saveNote(NoteModel model) {
         sqdb = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(TITLE,model.getTitle());
-        values.put(TEXT,model.getText());
-        values.put(DATE,model.getDate());
-        values.put(THEME,model.getTheme());
-        return sqdb.insert("notes",null,values);
+        values.put(TITLE, model.getTitle());
+        values.put(TEXT, model.getText());
+        values.put(DATE, model.getDate());
+        values.put(THEME, model.getTheme());
+        return sqdb.insert("notes", null, values);
     }
 
-    public long editNote(long id,NoteModel model){
+    public long editNote(long id, NoteModel model) {
         sqdb = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(TITLE,model.getTitle());
-        values.put(TEXT,model.getText());
-        values.put(DATE,model.getDate());
-        values.put(THEME,model.getTheme());
-        return sqdb.update("notes",values,"id="+id,null);
+        values.put(TITLE, model.getTitle());
+        values.put(TEXT, model.getText());
+        values.put(DATE, model.getDate());
+        values.put(THEME, model.getTheme());
+        return sqdb.update("notes", values, "id=" + id, null);
     }
 
-    /**Delete note from database*/
-    public void deleteNote(long id){
+    /**
+     * Delete note from database
+     */
+    public void deleteNote(long id) {
         sqdb = this.getWritableDatabase();
-        sqdb.delete("notes","id="+id,null);
+        sqdb.delete("notes", "id=" + id, null);
     }
 
-    public List<NoteModel> getNotes(){
+    public List<NoteModel> getNotes() {
         sqdb = this.getReadableDatabase();
         List<NoteModel> list = new ArrayList<>();
-        Cursor cursor = sqdb.rawQuery("SELECT * FROM notes",null);
-        while (cursor.moveToNext()){
+        Cursor cursor = sqdb.rawQuery("SELECT * FROM notes", null);
+        while (cursor.moveToNext()) {
             String title = cursor.getString(1),
                     text = cursor.getString(2);
             long date = cursor.getLong(3);
             int theme = cursor.getInt(4);
-            list.add(new NoteModel(title,text,date,theme));
+            list.add(new NoteModel(title, text, date, theme));
         }
         cursor.close();
         return list;
     }
-
-    /**
-     * Don't need to use it
-     */
-    @Deprecated
-    public void dbOpen() {
-        MySqlHelper helper = new MySqlHelper(context);
-        sqdb = helper.getWritableDatabase();
-    }
-
-    /**
-     * Don't need to use it
-     */
-    @Deprecated
-    public void dbClose() {
-        sqdb.close();
-    }
-
-    /**
-     * No enough data to save*/
-    @Deprecated
-    public Long dataInsert(String textdata) {
-        ContentValues cv = new ContentValues();
-        cv.put(TEXT, textdata);
-        Long id = sqdb.insert(TB_NAME, null, cv);
-        return id;
-    }
-
-    /**Too Complex to use*/
-    @Deprecated
-    public String dataQuery() {
-        String[] columns = {TEXT_ID, TEXT};
-        String str = null;
-        Cursor c = sqdb.query(TB_NAME, columns, null, null, null, null, null);
-        for (c.moveToFirst(); c.isAfterLast(); c.moveToNext()) {
-
-            int idIndex = c.getColumnIndex(TEXT_ID);
-            int textIndex = c.getColumnIndex(TEXT);
-            str = c.getString(textIndex);
-        }
-        return str;
-    }
-
-
-
 }

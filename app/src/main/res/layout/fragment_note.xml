@@ -6,9 +6,9 @@
     tools:context=".ui.NoteFragment">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_note"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/list_note"
-        tools:listitem="@layout/list_note_item"/>
+        tools:listitem="@layout/list_note_item" />
 
 </FrameLayout>

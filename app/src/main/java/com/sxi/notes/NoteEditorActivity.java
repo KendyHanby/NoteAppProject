@@ -1,24 +1,19 @@
 package com.sxi.notes;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.format.DateFormat;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.sxi.notes.databinding.ActivityNoteEditorBinding;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Locale;
 
 public class NoteEditorActivity extends AppCompatActivity {
@@ -57,9 +52,9 @@ public class NoteEditorActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 int length = charSequence.toString().trim()
-                        .replace(" ","")
-                        .replace("\n","").length();
-                if (length<2) {
+                        .replace(" ", "")
+                        .replace("\n", "").length();
+                if (length < 2) {
                     binding.date.setText(String.format(dc.concat(" | %s Character"), length));
                 } else {
                     binding.date.setText(String.format(dc.concat(" | %s Characters"), length));
@@ -84,7 +79,7 @@ public class NoteEditorActivity extends AppCompatActivity {
                     .putExtra("title", title)
                     .putExtra("text", text)
                     .putExtra("date", date)
-                    .putExtra("theme",0);
+                    .putExtra("theme", 0);
             setResult(RESULT_OK, intent);
         }
         super.onBackPressed();
