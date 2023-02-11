@@ -82,6 +82,7 @@ public class MySqlHelper extends SQLiteOpenHelper {
             int theme = cursor.getInt(4);
             list.add(new NoteModel(title,text,date,theme));
         }
+        cursor.close();
         return list;
     }
 

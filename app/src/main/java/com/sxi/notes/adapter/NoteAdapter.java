@@ -38,9 +38,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
     public void onBindViewHolder(@NonNull NoteVH holder, int position) {
         holder.title.setText(list.get(position).getTitle());
         holder.text.setText(list.get(position).getText());
-        holder.date.setText(new SimpleDateFormat("MMM hh:mm",Locale.US).format(new Date(list.get(position).getDate())));
-
-        Utils.setDate(holder.itemView.getContext(), list.get(position).getDate());
+        holder.date.setText(new SimpleDateFormat("hh:mm MMM d yyyy",Locale.US).format(new Date(list.get(position).getDate())));
     }
 
     @Override
