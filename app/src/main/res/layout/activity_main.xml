@@ -63,10 +63,13 @@
                 app:layout_collapseParallaxMultiplier="1"
                 android:layout_gravity="bottom">
                 <androidx.appcompat.widget.SearchView
+                    android:layout_margin="4dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_round_btn"/>
                 <TextView
+                    android:layout_margin="4dp"
+                    android:padding="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Synced with cloud"

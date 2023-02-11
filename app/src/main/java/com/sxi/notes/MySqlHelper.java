@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.sxi.notes.model.NoteModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MySqlHelper extends SQLiteOpenHelper {
     private SQLiteDatabase sqdb;
     Context context;
@@ -66,6 +69,20 @@ public class MySqlHelper extends SQLiteOpenHelper {
     public void deleteNote(long id){
         sqdb = this.getWritableDatabase();
         sqdb.delete("notes","id="+id,null);
+    }
+
+    public List<NoteModel> getNotes(){
+        sqdb = this.getReadableDatabase();
+        List<NoteModel> list = new ArrayList<>();
+        Cursor cursor = sqdb.rawQuery("SELECT * FROM notes",null);
+        while (cursor.moveToNext()){
+            String title = cursor.getString(1),
+                    text = cursor.getString(2);
+            long date = cursor.getLong(3);
+            int theme = cursor.getInt(4);
+            list.add(new NoteModel(title,text,date,theme));
+        }
+        return list;
     }
 
     /**
