@@ -83,7 +83,8 @@ public class NoteEditorActivity extends AppCompatActivity {
             Intent intent = new Intent()
                     .putExtra("title", title)
                     .putExtra("text", text)
-                    .putExtra("date", date);
+                    .putExtra("date", date)
+                    .putExtra("theme",0);
             setResult(RESULT_OK, intent);
         }
         super.onBackPressed();

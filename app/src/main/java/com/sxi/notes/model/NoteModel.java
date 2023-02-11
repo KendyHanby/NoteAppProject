@@ -1,17 +1,16 @@
-package com.sxi.notes;
+package com.sxi.notes.model;
 
 public class NoteModel {
-    private String title,text,folder;
+    private String title, text;
     private long date;
     private int theme;
 
     public NoteModel() {
     }
 
-    public NoteModel(String title, String text, String folder, long date, int theme) {
+    public NoteModel(String title, String text, long date, int theme) {
         this.title = title;
         this.text = text;
-        this.folder = folder;
         this.date = date;
         this.theme = theme;
     }
@@ -22,10 +21,6 @@ public class NoteModel {
 
     public String getText() {
         return text;
-    }
-
-    public String getFolder() {
-        return folder;
     }
 
     public long getDate() {

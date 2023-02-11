@@ -18,7 +18,7 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsing_layout"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="155dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:titleEnabled="false">
 
@@ -55,22 +55,24 @@
 
             </androidx.appcompat.widget.Toolbar>
 
-            <androidx.appcompat.widget.SearchView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_round_btn"
+                android:orientation="vertical"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="1"
-                android:layout_gravity="bottom"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Synced with cloud"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:background="@drawable/bg_round_btn"
-                app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="1"
-                android:layout_gravity="bottom"/>
+                android:layout_gravity="bottom">
+                <androidx.appcompat.widget.SearchView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_round_btn"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Synced with cloud"
+                    android:background="@drawable/bg_round_btn"/>
+
+            </LinearLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
