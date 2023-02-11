@@ -10,35 +10,44 @@
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:elevation="0dp"
+        android:background="@android:color/transparent"
         android:fitsSystemWindows="true">
+
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="125dp"
+            android:layout_height="130dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:titleEnabled="false">
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                app:layout_collapseMode="pin"
-                android:layout_height="?actionBarSize"/>
+                android:layout_height="?actionBarSize"
+                app:layout_collapseMode="pin"/>
+
             <TextView
                 android:id="@+id/date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|start"
+                android:layout_marginStart="16dp"
                 android:text="Date | Characters"
+                android:textColor="@color/black"
                 app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="1"/>
+                app:layout_collapseParallaxMultiplier="1" />
+
             <com.google.android.material.chip.Chip
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Category"
                 android:layout_gravity="bottom|start"
+                android:layout_marginStart="16dp"
+                android:text="Category"
+                android:textColor="@color/selected_color"
                 app:chipIcon="@drawable/temp_outline_note_24"
                 app:chipIconTint="@color/selected_color"
-                android:textColor="@color/selected_color"
                 app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="1"/>
+                app:layout_collapseParallaxMultiplier="1" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -46,20 +55,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <EditText
                 android:id="@+id/editor_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Title"/>
+                android:background="@android:color/transparent"
+                android:hint="Title"
+                android:padding="8dp" />
+
             <EditText
                 android:id="@+id/editor_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Start typing"/>
+                android:background="@android:color/transparent"
+                android:hint="Start typing"
+                android:padding="8dp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
