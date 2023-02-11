@@ -22,7 +22,7 @@ import com.sxi.notes.NoteEditorActivity;
 import com.sxi.notes.R;
 import com.sxi.notes.adapter.NoteAdapter;
 import com.sxi.notes.databinding.FragmentNoteBinding;
-import com.sxi.notes.model.NoteModel;
+import com.sxi.notes.data.model.NoteModel;
 
 public class NoteFragment extends Fragment {
 

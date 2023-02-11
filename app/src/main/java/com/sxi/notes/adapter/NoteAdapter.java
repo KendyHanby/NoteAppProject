@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sxi.notes.MySqlHelper;
 import com.sxi.notes.R;
-import com.sxi.notes.model.NoteModel;
+import com.sxi.notes.data.model.NoteModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
