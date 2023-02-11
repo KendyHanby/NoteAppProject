@@ -46,7 +46,7 @@ public class NoteEditorActivity extends AppCompatActivity {
         SimpleDateFormat format = new SimpleDateFormat("MMMM dd h:mm", Locale.US);
         date = calendar.getTimeInMillis();
         dc = format.format(calendar.getTime());
-        binding.date.setText(dc.concat("| 0 Characters"));
+        binding.date.setText(dc.concat(" | 0 Character"));
 
         binding.editorText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -56,8 +56,14 @@ public class NoteEditorActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                int length = charSequence.toString().trim().length();
-                binding.date.setText(String.format(dc.concat("| %s Characters"), length));
+                int length = charSequence.toString().trim()
+                        .replace(" ","")
+                        .replace("\n","").length();
+                if (length<2) {
+                    binding.date.setText(String.format(dc.concat(" | %s Character"), length));
+                } else {
+                    binding.date.setText(String.format(dc.concat(" | %s Characters"), length));
+                }
             }
 
             @Override
