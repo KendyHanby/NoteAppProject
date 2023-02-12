@@ -38,7 +38,7 @@ public class TaskFragment extends Fragment {
         binding = FragmentTaskBinding.inflate(inflater,container,false);
         binding.listTask.setHasFixedSize(true);
         binding.listTask.setLayoutManager(new LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false));
-        binding.listTask.setAdapter(new TaskAdapter());
+//        binding.listTask.setAdapter(new TaskAdapter());
 
         FloatingActionButton mainFab = requireActivity().findViewById(R.id.main_fab);
         mainFab.setOnClickListener(view -> {

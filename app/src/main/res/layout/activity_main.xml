@@ -55,29 +55,15 @@
 
             </androidx.appcompat.widget.Toolbar>
 
-            <LinearLayout
+            <androidx.appcompat.widget.SearchView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:orientation="vertical"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_round_btn"
                 app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="1">
+                app:layout_collapseParallaxMultiplier="1" />
 
-                <androidx.appcompat.widget.SearchView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:background="@drawable/bg_round_btn" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:background="@drawable/bg_round_btn"
-                    android:padding="8dp"
-                    android:text="Synced with cloud" />
-
-            </LinearLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 

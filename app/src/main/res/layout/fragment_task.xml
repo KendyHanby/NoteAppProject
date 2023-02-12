@@ -5,9 +5,8 @@
     android:layout_height="match_parent"
     tools:context=".ui.TaskFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <ExpandableListView
         android:id="@+id/list_task"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/list_task_item"/>
+        android:layout_height="match_parent" />
 </FrameLayout>
