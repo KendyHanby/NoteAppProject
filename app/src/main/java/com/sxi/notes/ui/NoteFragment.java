@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sxi.notes.MySqlHelper;
@@ -36,6 +37,7 @@ public class NoteFragment extends Fragment {
             int theme = bundle.getInt("theme");
             if (db.saveNote(new NoteModel(title, text, date, theme)) != -1) {
                 Toast.makeText(requireContext(), "Saved", Toast.LENGTH_SHORT).show();
+                ((RecyclerView.Adapter<?>)binding.listNote.getAdapter()).notifyDataSetChanged();
             }
         } else if (result.getResultCode() == RESULT_CANCELED) {
             Toast.makeText(requireContext(), "Cancel note", Toast.LENGTH_SHORT).show();

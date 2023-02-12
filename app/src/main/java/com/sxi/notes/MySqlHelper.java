@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.sxi.notes.data.NoteList;
 import com.sxi.notes.data.model.NoteModel;
 
 import java.util.ArrayList;
@@ -76,9 +77,9 @@ public class MySqlHelper extends SQLiteOpenHelper {
         sqdb.delete("notes", "id=" + id, null);
     }
 
-    public List<NoteModel> getNotes() {
+    public NoteList getNotes() {
         sqdb = this.getReadableDatabase();
-        List<NoteModel> list = new ArrayList<>();
+        NoteList list = new NoteList();
         Cursor cursor = sqdb.rawQuery("SELECT * FROM notes", null);
         while (cursor.moveToNext()) {
             String title = cursor.getString(1),
@@ -89,5 +90,27 @@ public class MySqlHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return list;
+    }
+
+    public NoteModel getNote(long id){
+        sqdb = this.getReadableDatabase();
+        Cursor cursor = sqdb.rawQuery("SELECT * FROM notes WHERE id="+(id+1),null);
+        NoteModel noteModel = new NoteModel();
+        if (cursor!=null&&cursor.moveToNext()){
+            noteModel = new NoteModel(cursor.getString(1),cursor.getString(2),cursor.getLong(3),cursor.getInt(4));
+            cursor.close();
+        }
+        return noteModel;
+    }
+
+    public int getNoteSize(){
+        sqdb = this.getReadableDatabase();
+        Cursor cursor = sqdb.rawQuery("SELECT id FROM notes",null);
+        if (cursor!=null) {
+            int count = cursor.getCount();
+            cursor.close();
+            return count;
+        }
+        return 0;
     }
 }

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sxi.notes.MySqlHelper;
 import com.sxi.notes.R;
+import com.sxi.notes.data.NoteList;
 import com.sxi.notes.data.model.NoteModel;
 
 import java.text.SimpleDateFormat;
@@ -20,12 +21,14 @@ import java.util.Locale;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
 
-    private List<NoteModel> list;
+    private NoteList list;
     private Context context;
+    private MySqlHelper db;
 
     public NoteAdapter(Context context) {
         this.context = context;
         list = new MySqlHelper(context).getNotes();
+        db = new MySqlHelper(context);
     }
 
     @NonNull
@@ -36,14 +39,17 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
 
     @Override
     public void onBindViewHolder(@NonNull NoteVH holder, int position) {
+        holder.title.setText(db.getNote(position).getTitle());
+        /*
         holder.title.setText(list.get(position).getTitle());
         holder.text.setText(list.get(position).getText());
         holder.date.setText(new SimpleDateFormat("hh:mm MMM d yyyy", Locale.US).format(new Date(list.get(position).getDate())));
+    */
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return db.getNoteSize();
     }
 
     class NoteVH extends RecyclerView.ViewHolder {
