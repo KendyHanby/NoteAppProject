@@ -6,11 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sxi.notes.R;
@@ -33,6 +32,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskVH> {
             }
             holder.title.setText(string);
         });
+//        holder.listSubTask.setHasFixedSize(true);
+        holder.listSubTask.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(),LinearLayoutManager.VERTICAL,false));
+        holder.listSubTask.setAdapter(new SubTaskAdapter());
     }
 
     @Override
@@ -43,12 +45,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskVH> {
     static class TaskVH extends RecyclerView.ViewHolder {
         CheckBox check;
         TextView title;
-        RecyclerView listTask;
+        RecyclerView listSubTask;
         public TaskVH(@NonNull View itemView) {
             super(itemView);
             check = itemView.findViewById(R.id.task_check);
             title = itemView.findViewById(R.id.task_title);
-            listTask = itemView.findViewById(R.id.list_task);
+            listSubTask = itemView.findViewById(R.id.list_subtask);
         }
     }
 }

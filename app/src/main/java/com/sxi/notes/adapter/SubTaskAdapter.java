@@ -13,7 +13,7 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.STVH> {
     @NonNull
     @Override
     public STVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new STVH(LayoutInflater.from(parent.getContext()).inflate(R.layout.subtask_editor,parent,false));
+        return new STVH(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_subtask_item,parent,false));
     }
 
     @Override
