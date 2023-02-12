@@ -1,9 +1,11 @@
 package com.sxi.notes;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -66,7 +68,34 @@ public class NoteEditorActivity extends AppCompatActivity {
 
             }
         });
+        SharedPreferences sh = getSharedPreferences("font_size",MODE_PRIVATE);
+        sh.getString("key",null);
+        loadTextSizeFromPreference(sh);
+
+
     }
+
+    public void saveToSharedPreferences(){
+        SharedPreferences.Editor editor = getSharedPreferences("font_size",MODE_PRIVATE).edit();
+        editor.putString("key", String.valueOf(R.string.pref_text_value));
+    }
+    private void loadTextSizeFromPreference(SharedPreferences sharedPreferences) {
+        changeTextSize(sharedPreferences.getString(getString(R.string.pref_text_key),getString(R.string.pref_text_value)));
+    }
+
+    private void changeTextSize(String pref_text_value) {
+        Log.d("Tsize", pref_text_value);
+        if (pref_text_value.equals("Small")) {
+            binding.editorText.setTextSize(10);
+        } else if(pref_text_value.equals("Medium")) {
+            binding.editorText.setTextSize(20);
+        } else if(pref_text_value.equals("Large")){
+            binding.editorText.setTextSize(30);
+        }else{
+            binding.editorText.setTextSize(40);
+        }
+    }
+
 
     @Override
     public void onBackPressed() {

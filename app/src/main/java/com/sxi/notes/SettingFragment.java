@@ -1,14 +1,19 @@
 package com.sxi.notes;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceScreen;
 
 
 public class SettingFragment extends PreferenceFragmentCompat {
+        Preference preference;
+
 
 
     @Override
@@ -17,26 +22,11 @@ public class SettingFragment extends PreferenceFragmentCompat {
 
 
 
-        Preference pre = (Preference) findPreference("font_key");
-        pre.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(@NonNull Preference preference) {return true;}
-        });
-            Preference presort = (Preference) findPreference("Sort");
-            presort.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(@NonNull Preference preference) {
-                    return true;
-                }
-            });
-
-
-
-
-
-
-
     }
+
+
+
+
 
 
 }

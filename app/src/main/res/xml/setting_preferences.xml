@@ -21,10 +21,10 @@
            android:title="STYLE">
 
            <ListPreference
-               android:defaultValue="Medium"
+               android:defaultValue="@string/pref_text_value"
                app:entries="@array/font_list"
                android:entryValues="@array/font_list"
-                android:key="font_key"
+                android:key="@string/pref_text_key"
                android:icon="@drawable/img"
                android:title="Font size"
                />
