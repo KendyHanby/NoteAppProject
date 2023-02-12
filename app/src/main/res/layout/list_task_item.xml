@@ -13,25 +13,19 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+<!--
         <CheckBox
             android:id="@+id/task_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+-->
 
         <TextView
             android:id="@+id/task_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:text="Your task is here"
-            android:textColor="@color/black" />
+            android:text="Your task is here" />
     </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list_subtask"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        tools:listitem="@layout/list_subtask_item" />
 
 </LinearLayout>
