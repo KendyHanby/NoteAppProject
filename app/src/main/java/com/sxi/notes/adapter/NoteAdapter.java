@@ -16,11 +16,9 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
-    private Context context;
-    private MySqlHelper db;
+    private final MySqlHelper db;
 
     public NoteAdapter(Context context) {
-        this.context = context;
         db = new MySqlHelper(context);
     }
 
@@ -35,11 +33,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
         holder.title.setText(db.getNote(position).getTitle());
         holder.text.setText(db.getNote(position).getText());
         holder.date.setText(new SimpleDateFormat("hh:mm MMM d, yyyy", Locale.US).format(db.getNote(position).getDate()));
-        /*
-        holder.title.setText(list.get(position).getTitle());
-        holder.text.setText(list.get(position).getText());
-        holder.date.setText(new SimpleDateFormat("hh:mm MMM d yyyy", Locale.US).format(new Date(list.get(position).getDate())));
-    */
     }
 
     @Override
@@ -47,7 +40,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
         return db.getNoteSize();
     }
 
-    class NoteVH extends RecyclerView.ViewHolder {
+    static class NoteVH extends RecyclerView.ViewHolder {
         TextView title, text, date;
 
         public NoteVH(@NonNull View itemView) {
