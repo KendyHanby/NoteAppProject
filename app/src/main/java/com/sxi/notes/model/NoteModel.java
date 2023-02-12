@@ -1,4 +1,4 @@
-package com.sxi.notes.data.model;
+package com.sxi.notes.model;
 
 public class NoteModel {
     private String title, text;
