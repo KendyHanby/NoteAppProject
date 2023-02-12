@@ -28,10 +28,11 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:text="Your task is here"
+                    android:textColor="@color/black"
                     android:id="@+id/task_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Your task is here"
                     android:padding="8dp" />
             </LinearLayout>
         </LinearLayout>
