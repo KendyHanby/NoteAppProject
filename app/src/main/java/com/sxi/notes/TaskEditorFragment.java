@@ -57,8 +57,9 @@ public class TaskEditorFragment extends BottomSheetDialogFragment {
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
         String title = binding.taskTitle.getText().toString();
-
-        db.saveTask(new TaskModel());
+        long reminder = 0;
+        boolean isDone = binding.taskCheck.isChecked();
+        db.saveTask(new TaskModel(title,reminder,isDone,null));
     }
 
     @Override

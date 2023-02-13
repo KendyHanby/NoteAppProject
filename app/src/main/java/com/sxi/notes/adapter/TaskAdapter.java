@@ -44,7 +44,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH>{
 
     @Override
     public void onBindViewHolder(@NonNull TVH holder, int position) {
-        holder.taskTitle.setText("");
+
         // TODO here
 /*
         for (int i = 0; i < position; i++) {

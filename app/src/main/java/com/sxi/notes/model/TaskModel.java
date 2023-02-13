@@ -13,7 +13,7 @@ public class TaskModel {
     public TaskModel() {
     }
 
-    public TaskModel(String title, long reminder, @Nullable List<SubTaskModel> subTask, boolean isDone) {
+    public TaskModel(String title, long reminder, boolean isDone, @Nullable List<SubTaskModel> subTask) {
         this.title = title;
         this.reminder = reminder;
         this.subTask = subTask;
