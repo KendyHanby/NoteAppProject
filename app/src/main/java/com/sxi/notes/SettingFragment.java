@@ -12,7 +12,7 @@ import androidx.preference.PreferenceScreen;
 
 
 public class SettingFragment extends PreferenceFragmentCompat {
-        Preference preference;
+
 
 
 
@@ -20,13 +20,6 @@ public class SettingFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
         setPreferencesFromResource(R.xml.setting_preferences,rootKey);
 
-
-
     }
-
-
-
-
-
 
 }

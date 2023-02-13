@@ -8,9 +8,11 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import com.sxi.notes.databinding.ActivityNoteEditorBinding;
 
@@ -68,33 +70,30 @@ public class NoteEditorActivity extends AppCompatActivity {
 
             }
         });
-        SharedPreferences sh = getSharedPreferences("font_size",MODE_PRIVATE);
-        sh.getString("key",null);
-        loadTextSizeFromPreference(sh);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String key = getString(R.string.pref_text_key);
+        String fontSizeKey = sharedPreferences.getString(key, "Medium");
 
-
-    }
-
-    public void saveToSharedPreferences(){
-        SharedPreferences.Editor editor = getSharedPreferences("font_size",MODE_PRIVATE).edit();
-        editor.putString("key", String.valueOf(R.string.pref_text_value));
-    }
-    private void loadTextSizeFromPreference(SharedPreferences sharedPreferences) {
-        changeTextSize(sharedPreferences.getString(getString(R.string.pref_text_key),getString(R.string.pref_text_value)));
-    }
-
-    private void changeTextSize(String pref_text_value) {
-        Log.d("Tsize", pref_text_value);
-        if (pref_text_value.equals("Small")) {
-            binding.editorText.setTextSize(10);
-        } else if(pref_text_value.equals("Medium")) {
-            binding.editorText.setTextSize(20);
-        } else if(pref_text_value.equals("Large")){
-            binding.editorText.setTextSize(30);
-        }else{
-            binding.editorText.setTextSize(40);
+        if (fontSizeKey.equals("Small")) {
+            binding.editorText.setTextSize(14);
+        } else if (fontSizeKey.equals("Medium")) {
+            binding.editorText.setTextSize(18);
+        } else if (fontSizeKey.equals("Large")) {
+            binding.editorText.setTextSize(22);
+        }else if (fontSizeKey.equals("Huge")) {
+            binding.editorText.setTextSize(26);
+        } else {
+            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
         }
+
+
+
+
     }
+
+
+
+
 
 
     @Override
