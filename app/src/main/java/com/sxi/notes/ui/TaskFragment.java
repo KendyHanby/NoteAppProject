@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -31,8 +32,9 @@ public class TaskFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentTaskBinding.inflate(inflater,container,false);
 
-
-        binding.listTask.setAdapter(new TaskAdapter(requireContext()));
+        binding.listTask.setHasFixedSize(true);
+        binding.listTask.setLayoutManager(new LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false));
+        binding.listTask.setAdapter(new TaskAdapter());
 
         FloatingActionButton mainFab = requireActivity().findViewById(R.id.main_fab);
         mainFab.setOnClickListener(view -> {
