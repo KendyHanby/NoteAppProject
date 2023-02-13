@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.sxi.notes.MainActivity;
 import com.sxi.notes.ui.NoteFragment;
 import com.sxi.notes.ui.TaskFragment;
 
@@ -18,6 +19,11 @@ public class MainPagerAdapter extends FragmentStateAdapter {
         list = new ArrayList<>();
         list.add(new NoteFragment());
         list.add(new TaskFragment());
+    }
+
+    public MainPagerAdapter(FragmentActivity fragmentActivity, List<Fragment> list) {
+        super(fragmentActivity);
+        this.list = list;
     }
 
     @NonNull

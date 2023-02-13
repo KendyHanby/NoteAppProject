@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -20,11 +21,14 @@ import android.widget.FrameLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.sxi.notes.adapter.SubTaskAdapter;
 import com.sxi.notes.databinding.FragmentTaskEditorBinding;
+import com.sxi.notes.model.TaskModel;
 
 public class TaskEditorFragment extends BottomSheetDialogFragment {
 
     private FragmentTaskEditorBinding binding;
+    private MySqlHelper db;
 
     public TaskEditorFragment() {
 
@@ -33,7 +37,7 @@ public class TaskEditorFragment extends BottomSheetDialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        db = new MySqlHelper(requireContext());
     }
 
     @Override
@@ -41,11 +45,21 @@ public class TaskEditorFragment extends BottomSheetDialogFragment {
                              Bundle savedInstanceState) {
         binding = FragmentTaskEditorBinding.inflate(inflater,container,false);
 
+        binding.listSubTask.setHasFixedSize(true);
+        binding.listSubTask.setLayoutManager(new LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false));
+        binding.listSubTask.setAdapter(new SubTaskAdapter());
+
         binding.button.setOnClickListener(v->{
             dismiss();
         });
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        db.saveTask(new TaskModel());
     }
 
     @Override

@@ -10,11 +10,17 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.sxi.notes.adapter.MainPagerAdapter;
 import com.sxi.notes.databinding.ActivityMainBinding;
+import com.sxi.notes.ui.NoteFragment;
+import com.sxi.notes.ui.TaskFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,7 +43,10 @@ public class MainActivity extends AppCompatActivity {
         //Icon selected color
         //setupTabIcons();
 
-        binding.mainPager.setAdapter(new MainPagerAdapter(this));
+        List<Fragment> list = new ArrayList<>();
+        list.add(new NoteFragment());
+        list.add(new TaskFragment());
+        binding.mainPager.setAdapter(new MainPagerAdapter(this,list));
 
         binding.mainPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override

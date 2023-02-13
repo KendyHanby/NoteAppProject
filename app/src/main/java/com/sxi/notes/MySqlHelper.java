@@ -134,4 +134,25 @@ public class MySqlHelper extends SQLiteOpenHelper {
         values.put(REMINDER, taskModel.getReminder());
         return sqdb.insert(TASK_TB, null, values);
     }
+
+    public TaskModel getTask(long id){
+        sqdb = this.getReadableDatabase();
+        Cursor cursor = sqdb.rawQuery("",null);
+        TaskModel taskModel = new TaskModel();
+        if (cursor!=null){
+            //TODO : manage data
+        }
+        return taskModel;
+    }
+
+    public int getTaskSize(){
+        sqdb = this.getReadableDatabase();
+        Cursor cursor = sqdb.rawQuery("SELECT * FROM tasks",null);
+        int size = 0;
+        if (cursor!=null){
+            size = cursor.getCount();
+            cursor.close();
+        }
+        return size;
+    }
 }

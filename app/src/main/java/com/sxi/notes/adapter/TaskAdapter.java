@@ -22,11 +22,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sxi.notes.MySqlHelper;
 import com.sxi.notes.R;
 import com.sxi.notes.Utils;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH>{
 
+    private MySqlHelper db;
+    private final Context context;
+
+    public TaskAdapter(Context context) {
+        db = new MySqlHelper(context);
+        this.context = context;
+    }
 
     @NonNull
     @Override
@@ -36,12 +44,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH>{
 
     @Override
     public void onBindViewHolder(@NonNull TVH holder, int position) {
-
+        holder.taskTitle.setText("");
+        // TODO here
+/*
         for (int i = 0; i < position; i++) {
             View layout = LayoutInflater.from(holder.itemView.getContext()).inflate(R.layout.list_subtask_item,null,false);
 
             holder.taskSub.addView(layout);
         }
+*/
         if (isEX(holder.taskEx)){
             holder.taskSub.setVisibility(View.VISIBLE);
         } else {
@@ -76,7 +87,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH>{
 
     @Override
     public int getItemCount() {
-        return 10;
+        return db.getTaskSize();
     }
 
     class TVH extends RecyclerView.ViewHolder {
