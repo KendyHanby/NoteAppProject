@@ -8,15 +8,13 @@ public class TaskModel {
     private String title;
     private long reminder;
     private boolean isDone;
-    private List<SubTaskModel> subTask;
 
     public TaskModel() {
     }
 
-    public TaskModel(String title, long reminder, boolean isDone, @Nullable List<SubTaskModel> subTask) {
+    public TaskModel(String title, long reminder, boolean isDone) {
         this.title = title;
         this.reminder = reminder;
-        this.subTask = subTask;
         this.isDone = isDone;
     }
 
@@ -26,11 +24,6 @@ public class TaskModel {
 
     public long getReminder() {
         return reminder;
-    }
-
-
-    public List<SubTaskModel> getSubTask() {
-        return subTask;
     }
 
     public boolean isDone() {

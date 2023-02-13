@@ -1,5 +1,6 @@
 package com.sxi.notes.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -41,6 +43,9 @@ public class TaskFragment extends Fragment {
         mainFab.setOnClickListener(view -> {
             TaskEditorFragment editorFragment = new TaskEditorFragment();
             editorFragment.show(getChildFragmentManager(),null);
+            editorFragment.setOnDismiss(() -> {
+                ((RecyclerView.Adapter<?>)binding.listTask.getAdapter()).notifyDataSetChanged();
+            });
         });
         return binding.getRoot();
     }

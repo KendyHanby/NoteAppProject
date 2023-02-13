@@ -10,7 +10,6 @@ import android.os.Bundle;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sxi.notes.model.NoteModel;
-import com.sxi.notes.model.SubTaskModel;
 import com.sxi.notes.model.TaskModel;
 
 import java.util.LinkedList;
@@ -134,18 +133,14 @@ public class MySqlHelper extends SQLiteOpenHelper {
         sqdb = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(TITLE, taskModel.getTitle());
-        if (taskModel.getSubTask() != null) {
-            values.put(SUBTASK, new Gson().toJson(taskModel.getSubTask()));
-        } else {
-            values.putNull(SUBTASK);
-        }
         values.put(REMINDER, taskModel.getReminder());
+        values.put(ISDONE,taskModel.isDone());
         return sqdb.insert(TASK_TB, null, values);
     }
 
     public TaskModel getTask(long id) {
         sqdb = this.getReadableDatabase();
-        Cursor cursor = sqdb.rawQuery("", null);
+        Cursor cursor = sqdb.rawQuery("SELECT * FROM tasks WHERE id="+(id+1), null);
         TaskModel taskModel = new TaskModel();
         if (cursor != null && cursor.moveToNext()) {
             Bundle bundle = cursor.getExtras();
@@ -153,22 +148,11 @@ public class MySqlHelper extends SQLiteOpenHelper {
             taskModel = new TaskModel(
                     bundle.getString(TITLE),
                     bundle.getLong(REMINDER),
-                    new Gson().fromJson(bundle.getString(SUBTASK), new TypeToken<List<SubTaskModel>>(){}.getType()),
                     bundle.getBoolean(ISDONE)
                     );
-        }
-        return taskModel;
-    }
-
-    public List<SubTaskModel> getSubTaskList(long id){
-        sqdb = this.getReadableDatabase();
-        Cursor cursor = sqdb.rawQuery("SELECT id,subtask FROM tasks WHERE id="+id,null);
-        List<SubTaskModel> list = new LinkedList<>();
-        while (cursor!=null && cursor.moveToNext()){
-            list = new Gson().fromJson(cursor.getExtras().getString(SUBTASK), new TypeToken<List<SubTaskModel>>(){}.getType());
             cursor.close();
         }
-        return list;
+        return taskModel;
     }
 
     public int getTaskSize() {

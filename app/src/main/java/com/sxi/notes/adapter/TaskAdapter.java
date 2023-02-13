@@ -46,18 +46,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH>{
     public void onBindViewHolder(@NonNull TVH holder, int position) {
 
         // TODO here
-/*
-        for (int i = 0; i < position; i++) {
-            View layout = LayoutInflater.from(holder.itemView.getContext()).inflate(R.layout.list_subtask_item,null,false);
+        holder.taskTitle.setText(db.getTask(position).getTitle());
+        holder.taskCheck.setChecked(db.getTask(position).isDone());
 
-            holder.taskSub.addView(layout);
-        }
-*/
-        if (isEX(holder.taskEx)){
-            holder.taskSub.setVisibility(View.VISIBLE);
-        } else {
-            holder.taskSub.setVisibility(View.GONE);
-        }
         holder.taskCheck.setOnCheckedChangeListener((compoundButton, b) -> {
             SpannableString string = new SpannableString(holder.taskTitle.getText().toString());
             if (b){
@@ -66,18 +57,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH>{
                 string.removeSpan(new StrikethroughSpan());
             }
             holder.taskTitle.setText(string);
-        });
-        holder.taskEx.setOnClickListener(v -> {
-            if (isEX(holder.taskEx)){
-                setAnimation(holder.taskEx,ROTATION,100,180,360);
-                setAnimation(holder.taskSub,TRANSLATIONY,100,0,-50);
-                holder.taskSub.setVisibility(View.GONE);
-            }else {
-                setAnimation(holder.taskEx,ROTATION,100,0,180);
-                setAnimation(holder.taskSub,TRANSLATIONY,100,-50,0);
-                holder.taskSub.setVisibility(View.VISIBLE);
-            }
-
         });
     }
 
@@ -93,14 +72,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH>{
     class TVH extends RecyclerView.ViewHolder {
         CheckBox taskCheck;
         TextView taskTitle;
-        ImageView taskEx;
-        LinearLayout taskSub;
         public TVH(@NonNull View itemView) {
             super(itemView);
             taskCheck = itemView.findViewById(R.id.task_check);
             taskTitle = itemView.findViewById(R.id.task_title);
-            taskEx = itemView.findViewById(R.id.task_ex);
-            taskSub = itemView.findViewById(R.id.task_sub);
         }
     }
 }
