@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:id="@+id/sgt"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -31,6 +31,7 @@
         android:id="@+id/mtt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:orientation="vertical">
 
         <EditText

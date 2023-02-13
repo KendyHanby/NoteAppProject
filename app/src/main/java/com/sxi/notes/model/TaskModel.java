@@ -2,25 +2,21 @@ package com.sxi.notes.model;
 
 import androidx.annotation.Nullable;
 
+import java.util.List;
+
 public class TaskModel {
     private String title;
     private long reminder;
-    private SubTaskModel subTask;
     private boolean isDone;
+    private List<SubTaskModel> subTask;
 
     public TaskModel() {
     }
 
-    public TaskModel(String title, long reminder, @Nullable SubTaskModel subTask, boolean isDone) {
+    public TaskModel(String title, long reminder, @Nullable List<SubTaskModel> subTask, boolean isDone) {
         this.title = title;
         this.reminder = reminder;
         this.subTask = subTask;
-        this.isDone = isDone;
-    }
-    public TaskModel(String title, long reminder, @Nullable String subTask, boolean isDone) {
-        this.title = title;
-        this.reminder = reminder;
-
         this.isDone = isDone;
     }
 
@@ -32,7 +28,8 @@ public class TaskModel {
         return reminder;
     }
 
-    public SubTaskModel getSubTask() {
+
+    public List<SubTaskModel> getSubTask() {
         return subTask;
     }
 

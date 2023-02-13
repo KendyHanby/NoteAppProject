@@ -5,10 +5,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Bundle;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sxi.notes.model.NoteModel;
+import com.sxi.notes.model.SubTaskModel;
 import com.sxi.notes.model.TaskModel;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class MySqlHelper extends SQLiteOpenHelper {
     private SQLiteDatabase sqdb;
@@ -28,8 +34,8 @@ public class MySqlHelper extends SQLiteOpenHelper {
 
     // Task contents
     private static final String TASK_TB = "tasks";
-    private static final String TASK = "task";
     private static final String REMINDER = "reminder";
+    private static final String ISDONE = "isdone";
     private static final String SUBTASK = "subtask";
 
 
@@ -41,7 +47,7 @@ public class MySqlHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String noteQuery = "CREATE TABLE notes(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, text TEXT,date LONG, theme INTEGER);";
-        String taskQuery = "CREATE TABLE tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, task TEXT,reminder LONG,subtask LONG);";
+        String taskQuery = "CREATE TABLE tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, reminder LONG, isdone BOOLEAN, subtask TEXT);";
         sqLiteDatabase.execSQL(noteQuery);
         sqLiteDatabase.execSQL(taskQuery);
     }
@@ -130,26 +136,46 @@ public class MySqlHelper extends SQLiteOpenHelper {
         values.put(TITLE, taskModel.getTitle());
         if (taskModel.getSubTask() != null) {
             values.put(SUBTASK, new Gson().toJson(taskModel.getSubTask()));
+        } else {
+            values.putNull(SUBTASK);
         }
         values.put(REMINDER, taskModel.getReminder());
         return sqdb.insert(TASK_TB, null, values);
     }
 
-    public TaskModel getTask(long id){
+    public TaskModel getTask(long id) {
         sqdb = this.getReadableDatabase();
-        Cursor cursor = sqdb.rawQuery("",null);
+        Cursor cursor = sqdb.rawQuery("", null);
         TaskModel taskModel = new TaskModel();
-        if (cursor!=null){
+        if (cursor != null && cursor.moveToNext()) {
+            Bundle bundle = cursor.getExtras();
             //TODO : manage data
+            taskModel = new TaskModel(
+                    bundle.getString(TITLE),
+                    bundle.getLong(REMINDER),
+                    new Gson().fromJson(bundle.getString(SUBTASK), new TypeToken<List<SubTaskModel>>(){}.getType()),
+                    bundle.getBoolean(ISDONE)
+                    );
         }
         return taskModel;
     }
 
-    public int getTaskSize(){
+    public List<SubTaskModel> getSubTaskList(long id){
         sqdb = this.getReadableDatabase();
-        Cursor cursor = sqdb.rawQuery("SELECT * FROM tasks",null);
+        Cursor cursor = sqdb.rawQuery("SELECT id,subtask FROM tasks WHERE id="+id,null);
+        List<SubTaskModel> list = new LinkedList<>();
+        while (cursor!=null && cursor.moveToNext()){
+            list = new Gson().fromJson(cursor.getExtras().getString(SUBTASK), new TypeToken<List<SubTaskModel>>(){}.getType());
+            cursor.close();
+        }
+        return list;
+    }
+
+    public int getTaskSize() {
+        sqdb = this.getReadableDatabase();
+        Cursor cursor = sqdb.rawQuery("SELECT * FROM tasks", null);
         int size = 0;
-        if (cursor!=null){
+        if (cursor != null) {
             size = cursor.getCount();
             cursor.close();
         }

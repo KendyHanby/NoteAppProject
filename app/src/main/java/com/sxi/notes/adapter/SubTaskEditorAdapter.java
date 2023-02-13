@@ -1,5 +1,6 @@
 package com.sxi.notes.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,9 +8,22 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sxi.notes.MySqlHelper;
 import com.sxi.notes.R;
+import com.sxi.notes.model.SubTaskModel;
 
-public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.STVH> {
+import java.util.List;
+
+public class SubTaskEditorAdapter extends RecyclerView.Adapter<SubTaskEditorAdapter.STVH> {
+
+    private List<SubTaskModel> list;
+    private MySqlHelper db;
+
+    public SubTaskEditorAdapter(List<SubTaskModel> list, Context context) {
+        this.list = list;
+        db =new MySqlHelper(context);
+    }
+
     @NonNull
     @Override
     public STVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

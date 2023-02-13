@@ -1,29 +1,26 @@
 package com.sxi.notes;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Rect;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.sxi.notes.adapter.SubTaskAdapter;
+import com.sxi.notes.adapter.SubTaskEditorAdapter;
 import com.sxi.notes.databinding.FragmentTaskEditorBinding;
+import com.sxi.notes.model.SubTaskModel;
 import com.sxi.notes.model.TaskModel;
+
+import java.util.List;
 
 public class TaskEditorFragment extends BottomSheetDialogFragment {
 
@@ -47,7 +44,7 @@ public class TaskEditorFragment extends BottomSheetDialogFragment {
 
         binding.listSubTask.setHasFixedSize(true);
         binding.listSubTask.setLayoutManager(new LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false));
-        binding.listSubTask.setAdapter(new SubTaskAdapter());
+        binding.listSubTask.setAdapter(new SubTaskEditorAdapter(null,requireContext()));
 
         binding.button.setOnClickListener(v->{
             dismiss();
@@ -59,6 +56,8 @@ public class TaskEditorFragment extends BottomSheetDialogFragment {
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
+        String title = binding.taskTitle.getText().toString();
+
         db.saveTask(new TaskModel());
     }
 
