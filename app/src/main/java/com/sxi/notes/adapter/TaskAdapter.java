@@ -36,13 +36,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH>{
     boolean isEX = false;
     @Override
     public void onBindViewHolder(@NonNull TVH holder, int position) {
-
         for (int i = 0; i < position; i++) {
             View layout = LayoutInflater.from(holder.itemView.getContext()).inflate(R.layout.list_subtask_item,null,false);
 
             holder.taskSub.addView(layout);
         }
-
         if (isEX){
             holder.taskSub.setVisibility(View.VISIBLE);
         } else {
