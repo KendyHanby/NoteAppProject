@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sxi.notes.R;
-import com.sxi.notes.TaskEditorFragment;
 import com.sxi.notes.adapter.TaskAdapter;
 import com.sxi.notes.databinding.FragmentTaskBinding;
 
@@ -40,10 +38,7 @@ public class TaskFragment extends Fragment {
 
         FloatingActionButton mainFab = requireActivity().findViewById(R.id.main_fab);
         mainFab.setOnClickListener(view -> {
-            TaskEditorFragment editorFragment = new TaskEditorFragment();
-            editorFragment.getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-            editorFragment.show(getChildFragmentManager(),null);
-
+            BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
         });
         return binding.getRoot();
     }
