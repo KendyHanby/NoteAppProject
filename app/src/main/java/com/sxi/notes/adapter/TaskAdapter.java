@@ -39,6 +39,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH>{
 
         for (int i = 0; i < position; i++) {
             View layout = LayoutInflater.from(holder.itemView.getContext()).inflate(R.layout.list_subtask_item,null,false);
+
             holder.taskSub.addView(layout);
         }
 
