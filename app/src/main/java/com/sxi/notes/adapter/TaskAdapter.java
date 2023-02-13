@@ -33,7 +33,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH>{
     public TVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new TVH(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_task_item,parent,false));
     }
-    boolean isEX = false;
+
     @Override
     public void onBindViewHolder(@NonNull TVH holder, int position) {
 
@@ -42,8 +42,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH>{
 
             holder.taskSub.addView(layout);
         }
-
-        if (isEX){
+        if (isEX(holder.taskEx)){
             holder.taskSub.setVisibility(View.VISIBLE);
         } else {
             holder.taskSub.setVisibility(View.GONE);
@@ -58,7 +57,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH>{
             holder.taskTitle.setText(string);
         });
         holder.taskEx.setOnClickListener(v -> {
-            if (isEX){
+            if (isEX(holder.taskEx)){
                 setAnimation(holder.taskEx,ROTATION,100,180,360);
                 setAnimation(holder.taskSub,TRANSLATIONY,100,0,-50);
                 holder.taskSub.setVisibility(View.GONE);
@@ -67,8 +66,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH>{
                 setAnimation(holder.taskSub,TRANSLATIONY,100,-50,0);
                 holder.taskSub.setVisibility(View.VISIBLE);
             }
-            isEX = !isEX;
+
         });
+    }
+
+    private boolean isEX(View view){
+        return view.getRotation() == 180;
     }
 
     @Override

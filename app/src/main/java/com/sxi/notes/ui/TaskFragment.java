@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sxi.notes.R;
+import com.sxi.notes.TaskEditorFragment;
 import com.sxi.notes.adapter.TaskAdapter;
 import com.sxi.notes.databinding.FragmentTaskBinding;
 
@@ -38,7 +39,8 @@ public class TaskFragment extends Fragment {
 
         FloatingActionButton mainFab = requireActivity().findViewById(R.id.main_fab);
         mainFab.setOnClickListener(view -> {
-            BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
+            TaskEditorFragment editorFragment = new TaskEditorFragment();
+            editorFragment.show(getChildFragmentManager(),null);
         });
         return binding.getRoot();
     }
