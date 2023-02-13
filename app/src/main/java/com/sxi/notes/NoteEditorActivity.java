@@ -1,7 +1,9 @@
 package com.sxi.notes;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -26,6 +28,7 @@ public class NoteEditorActivity extends AppCompatActivity {
     private long date;
     private String dc;
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,9 +73,11 @@ public class NoteEditorActivity extends AppCompatActivity {
 
             }
         });
+
+        //Font Size From Setting
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String key = getString(R.string.pref_text_key);
-        String fontSizeKey = sharedPreferences.getString(key, "Medium");
+        String font_key = getString(R.string.pref_text_key);
+        String fontSizeKey = sharedPreferences.getString(font_key, "Medium");
 
         if (fontSizeKey.equals("Small")) {
             binding.editorText.setTextSize(14);
@@ -83,12 +88,31 @@ public class NoteEditorActivity extends AppCompatActivity {
         }else if (fontSizeKey.equals("Huge")) {
             binding.editorText.setTextSize(26);
         } else {
-            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Choose the size", Toast.LENGTH_SHORT).show();
         }
 
-
-
-
+        //Text Color From Setting
+        SharedPreferences sh = PreferenceManager.getDefaultSharedPreferences(this);
+        String color_key = getString(R.string.pref_text_color_key);
+        String colorKey = sh.getString(color_key, "blue");
+        if (colorKey.equals("red")) {
+            binding.editorText.setTextColor(Color.RED);
+        } else if (colorKey.equals("green")) {
+            binding.editorText.setTextColor(Color.GREEN);
+        } else if (colorKey.equals("blue")) {
+            binding.editorText.setTextColor(Color.BLUE);
+        } else if (colorKey.equals("black")) {
+            binding.editorText.setTextColor(Color.BLACK);
+        }else if (colorKey.equals("yellow")) {
+            binding.editorText.setTextColor(Color.YELLOW);
+        }else if (colorKey.equals("gray")) {
+            binding.editorText.setTextColor(Color.GRAY);
+        }else if (colorKey.equals("white")) {
+            binding.editorText.setTextColor(Color.WHITE);
+        }
+        else {
+            Toast.makeText(this, "Choose the color", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
