@@ -1,5 +1,6 @@
 package com.sxi.notes.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,8 +25,8 @@ public class TaskFragment extends Fragment {
 
     private FragmentTaskBinding binding;
     private MySqlHelper db;
-    private TaskAdapter adapter;
     private FloatingActionButton fab;
+    private TaskEditorFragment editorFragment;
 
     public TaskFragment() {
         // Required empty public constructor
@@ -34,8 +35,7 @@ public class TaskFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db = new MySqlHelper(getContext());
-        adapter = new TaskAdapter(getContext());
+        db = new MySqlHelper(requireContext());
     }
 
     @Override
@@ -45,12 +45,10 @@ public class TaskFragment extends Fragment {
 
         binding.listTask.setHasFixedSize(true);
         binding.listTask.setLayoutManager(new LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false));
-        binding.listTask.setAdapter(adapter);
-
-        adapter.notifyDataSetChanged();
+        binding.listTask.setAdapter(new TaskAdapter(requireContext()));
 
         fab = requireActivity().findViewById(R.id.main_fab);
-
+        editorFragment = new TaskEditorFragment();
         return binding.getRoot();
     }
 
@@ -58,16 +56,12 @@ public class TaskFragment extends Fragment {
     public void onResume() {
         super.onResume();
         fab.setOnClickListener(view -> {
-            TaskEditorFragment editorFragment = new TaskEditorFragment();
-            editorFragment.show(getParentFragmentManager(),null);
-            editorFragment.setOnSave(new TaskEditorFragment.OnSave() {
-                @Override
-                public void onSave(String title, long reminder, int isDone) {
-                    if (db.saveTask(new TaskModel(title,reminder,isDone))==-1) {
-                        Toast.makeText(getContext(), "Can't Save Task", Toast.LENGTH_SHORT).show();
-                    }
-                    ((RecyclerView.Adapter<?>)binding.listTask.getAdapter()).notifyDataSetChanged();
+            editorFragment.show(getChildFragmentManager(),null);
+            editorFragment.setOnSave((title, reminder, isDone) -> {
+                if (db.saveTask(new TaskModel(title,reminder,isDone))==-1) {
+                    Toast.makeText(requireContext(), "Can't Save Task", Toast.LENGTH_SHORT).show();
                 }
+                ((RecyclerView.Adapter<?>)binding.listTask.getAdapter()).notifyDataSetChanged();
             });
         });
     }

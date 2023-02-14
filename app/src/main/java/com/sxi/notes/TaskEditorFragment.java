@@ -47,8 +47,6 @@ public class TaskEditorFragment extends BottomSheetDialogFragment {
                              Bundle savedInstanceState) {
         binding = FragmentTaskEditorBinding.inflate(inflater, container, false);
 
-        this.getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
         binding.save.setOnClickListener(v -> {
             String title = binding.taskTitle.getText().toString();
             long reminder = 0;
