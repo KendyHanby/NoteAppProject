@@ -60,11 +60,14 @@ public class TaskFragment extends Fragment {
         fab.setOnClickListener(view -> {
             TaskEditorFragment editorFragment = new TaskEditorFragment();
             editorFragment.show(getParentFragmentManager(),null);
-            editorFragment.setOnSave((String title, long reminder, boolean isDone) -> {
-                if (db.saveTask(new TaskModel(title,reminder,isDone))==-1) {
-                    Toast.makeText(getContext(), "Can't Save Task", Toast.LENGTH_SHORT).show();
+            editorFragment.setOnSave(new TaskEditorFragment.OnSave() {
+                @Override
+                public void onSave(String title, long reminder, int isDone) {
+                    if (db.saveTask(new TaskModel(title,reminder,isDone))==-1) {
+                        Toast.makeText(getContext(), "Can't Save Task", Toast.LENGTH_SHORT).show();
+                    }
+                    ((RecyclerView.Adapter<?>)binding.listTask.getAdapter()).notifyDataSetChanged();
                 }
-                ((RecyclerView.Adapter<?>)binding.listTask.getAdapter()).notifyDataSetChanged();
             });
         });
     }

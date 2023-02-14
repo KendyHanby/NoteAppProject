@@ -41,7 +41,7 @@ public class MySqlHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String noteQuery = "CREATE TABLE notes(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, text TEXT,date LONG, theme INTEGER);";
-        String taskQuery = "CREATE TABLE tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, reminder LONG, isdone BOOLEAN, subtask TEXT);";
+        String taskQuery = "CREATE TABLE tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, reminder LONG, isdone INTEGER);";
         sqLiteDatabase.execSQL(noteQuery);
         sqLiteDatabase.execSQL(taskQuery);
     }
@@ -130,21 +130,22 @@ public class MySqlHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(TITLE, taskModel.getTitle());
         values.put(REMINDER, taskModel.getReminder());
-        values.put(ISDONE, taskModel.isDone());
+        values.put(ISDONE, taskModel.isDoneInt());
         return sqdb.insert(TASK_TB, null, values);
     }
 
     public TaskModel getTask(long id) {
+
+        // TODO : unfinished
+
         sqdb = this.getReadableDatabase();
         Cursor cursor = sqdb.rawQuery("SELECT * FROM tasks WHERE id=" + (id + 1), null);
         if (cursor != null) {
             cursor.moveToNext();
-            Bundle bundle = cursor.getExtras();
-            //TODO : manage data
             TaskModel taskModel = new TaskModel(
-                    bundle.getString(TITLE),
-                    bundle.getLong(REMINDER),
-                    bundle.getBoolean(ISDONE)
+                    cursor.getString(1),
+                    cursor.getLong(2),
+                    cursor.getInt(3)
             );
             cursor.close();
             return taskModel;
@@ -163,7 +164,7 @@ public class MySqlHelper extends SQLiteOpenHelper {
 
     public int getTaskSize() {
         sqdb = this.getReadableDatabase();
-        Cursor cursor = sqdb.rawQuery("SELECT COUNT(*) FROM tasks", null);
+        Cursor cursor = sqdb.rawQuery("SELECT COUNT(id) FROM tasks", null);
         if (cursor != null) {
             int count = cursor.getCount();
             cursor.close();

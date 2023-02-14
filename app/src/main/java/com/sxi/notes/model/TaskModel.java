@@ -12,6 +12,12 @@ public class TaskModel {
     public TaskModel() {
     }
 
+    public TaskModel(String title, long reminder, int isDone) {
+        this.title = title;
+        this.reminder = reminder;
+        this.isDone = isDone==1;
+    }
+
     public TaskModel(String title, long reminder, boolean isDone) {
         this.title = title;
         this.reminder = reminder;
@@ -28,5 +34,9 @@ public class TaskModel {
 
     public boolean isDone() {
         return isDone;
+    }
+
+    public int isDoneInt(){
+        return isDone?1:0;
     }
 }
