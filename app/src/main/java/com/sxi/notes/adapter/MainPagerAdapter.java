@@ -21,11 +21,6 @@ public class MainPagerAdapter extends FragmentStateAdapter {
         list.add(new TaskFragment());
     }
 
-    public MainPagerAdapter(FragmentActivity fragmentActivity, List<Fragment> list) {
-        super(fragmentActivity);
-        this.list = list;
-    }
-
     @NonNull
     @Override
     public Fragment createFragment(int position) {

@@ -42,11 +42,9 @@ public class MainActivity extends AppCompatActivity {
         // We don't use it. It mess up code.
         //Icon selected color
         //setupTabIcons();
+        binding.mainPager.setOffscreenPageLimit(1);
 
-        List<Fragment> list = new ArrayList<>();
-        list.add(new NoteFragment());
-        list.add(new TaskFragment());
-        binding.mainPager.setAdapter(new MainPagerAdapter(this,list));
+        binding.mainPager.setAdapter(new MainPagerAdapter(this));
 
         binding.mainPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -87,56 +85,5 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), SettingAv.class));
         }
         return super.onOptionsItemSelected(item);
-    }
-
-
-
-  /*
-        private void addDataToSqlDatabase(){
-        String txt = xxx.getText().toString();
-
-        mySqlHelper.dbOpen();
-        long id = mySqlHelper.dataInsert(txt);
-        mySqlHelper.dbclose();
-        if(id < 0){
-        Toast.makeText(getApplicationContext(),"Something went wrong",Toast.LENGTH_LONG).show();
-        }else{
-        Toast.makeText(getApplicationContext(),"Successfully",Toast.LENGTH_LONG).show();
-        }
-        }
-    */
-
-    /*
-           private void startQuery(){
-           mySqlHelper.dbOpen();
-           String st = mySqlHelper.dataQuery()
-           mySqlHelper.dbclose();
-
-           }
-     */
-    @Deprecated
-    /**Using Color State List is better*/
-    private void setupTabIcons() {
-
-        binding.tabTool.getTabAt(0).getIcon().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN);
-        binding.tabTool.getTabAt(1).getIcon().setColorFilter(Color.parseColor("#a8a8a8"), PorterDuff.Mode.SRC_IN);
-
-        binding.tabTool.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                tab.getIcon().setColorFilter(getColor(R.color.selected_color), PorterDuff.Mode.SRC_IN);
-
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                tab.getIcon().setColorFilter(getColor(R.color.unselected_color), PorterDuff.Mode.SRC_IN);
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
     }
 }

@@ -1,25 +1,31 @@
 package com.sxi.notes.ui;
 
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.sxi.notes.MySqlHelper;
+import com.sxi.notes.NoteEditorActivity;
 import com.sxi.notes.R;
 import com.sxi.notes.TaskEditorFragment;
 import com.sxi.notes.adapter.TaskAdapter;
 import com.sxi.notes.databinding.FragmentTaskBinding;
+import com.sxi.notes.model.TaskModel;
 
 public class TaskFragment extends Fragment {
 
     private FragmentTaskBinding binding;
+    private MySqlHelper db;
+    private TaskAdapter adapter;
+    private FloatingActionButton fab;
 
     public TaskFragment() {
         // Required empty public constructor
@@ -28,6 +34,8 @@ public class TaskFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = new MySqlHelper(getContext());
+        adapter = new TaskAdapter(getContext());
     }
 
     @Override
@@ -37,16 +45,33 @@ public class TaskFragment extends Fragment {
 
         binding.listTask.setHasFixedSize(true);
         binding.listTask.setLayoutManager(new LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false));
-        binding.listTask.setAdapter(new TaskAdapter(requireContext()));
+        binding.listTask.setAdapter(adapter);
 
-        FloatingActionButton mainFab = requireActivity().findViewById(R.id.main_fab);
-        mainFab.setOnClickListener(view -> {
+        adapter.notifyDataSetChanged();
+
+        fab = requireActivity().findViewById(R.id.main_fab);
+
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        fab.setOnClickListener(view -> {
             TaskEditorFragment editorFragment = new TaskEditorFragment();
-            editorFragment.show(getChildFragmentManager(),null);
-            editorFragment.setOnDismiss(() -> {
+            editorFragment.show(getParentFragmentManager(),null);
+            editorFragment.setOnSave((String title, long reminder, boolean isDone) -> {
+                if (db.saveTask(new TaskModel(title,reminder,isDone))==-1) {
+                    Toast.makeText(getContext(), "Can't Save Task", Toast.LENGTH_SHORT).show();
+                }
                 ((RecyclerView.Adapter<?>)binding.listTask.getAdapter()).notifyDataSetChanged();
             });
         });
-        return binding.getRoot();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        fab.setOnClickListener(null);
     }
 }

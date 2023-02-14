@@ -3,6 +3,7 @@ package com.sxi.notes.ui;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,6 +31,8 @@ public class NoteFragment extends Fragment {
 
     private FragmentNoteBinding binding;
     private MySqlHelper db;
+    private FloatingActionButton fab;
+
     private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
             Bundle bundle = result.getData().getExtras();
@@ -65,10 +69,23 @@ public class NoteFragment extends Fragment {
         binding.listNote.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
         binding.listNote.setAdapter(new NoteAdapter(requireContext()));
 
-        FloatingActionButton mainFab = requireActivity().findViewById(R.id.main_fab);
-        mainFab.setOnClickListener(view -> {
-            launcher.launch(new Intent(requireContext(), NoteEditorActivity.class));
-        });
+        fab = requireActivity().findViewById(R.id.main_fab);
         return binding.getRoot();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        fab.setOnClickListener(view -> {
+            launcher.launch(new Intent(requireContext(), NoteEditorActivity.class));
+        });
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        fab.setOnClickListener(null);
+    }
+
 }

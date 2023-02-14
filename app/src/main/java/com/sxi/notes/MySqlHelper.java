@@ -7,13 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sxi.notes.model.NoteModel;
 import com.sxi.notes.model.TaskModel;
-
-import java.util.LinkedList;
-import java.util.List;
 
 public class MySqlHelper extends SQLiteOpenHelper {
     private SQLiteDatabase sqdb;
@@ -76,14 +71,14 @@ public class MySqlHelper extends SQLiteOpenHelper {
     /**
      * Edit notes in database
      */
-    public long editNote(long id, NoteModel model) {
+    public long updateNote(long id, NoteModel model) {
         sqdb = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(TITLE, model.getTitle());
         values.put(TEXT, model.getText());
         values.put(DATE, model.getDate());
         values.put(THEME, model.getTheme());
-        return sqdb.update("notes", values, "id=" + id, null);
+        return sqdb.update("notes", values, "id=" + (id+1), null);
     }
 
     /**
@@ -101,7 +96,8 @@ public class MySqlHelper extends SQLiteOpenHelper {
         sqdb = this.getReadableDatabase();
         Cursor cursor = sqdb.rawQuery("SELECT * FROM notes WHERE id=" + (id + 1), null);
         NoteModel noteModel = new NoteModel();
-        if (cursor != null && cursor.moveToNext()) {
+        if (cursor != null) {
+            cursor.moveToNext();
             noteModel = new NoteModel(cursor.getString(1), cursor.getString(2), cursor.getLong(3), cursor.getInt(4));
             cursor.close();
         }
@@ -134,35 +130,45 @@ public class MySqlHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(TITLE, taskModel.getTitle());
         values.put(REMINDER, taskModel.getReminder());
-        values.put(ISDONE,taskModel.isDone());
+        values.put(ISDONE, taskModel.isDone());
         return sqdb.insert(TASK_TB, null, values);
     }
 
     public TaskModel getTask(long id) {
         sqdb = this.getReadableDatabase();
-        Cursor cursor = sqdb.rawQuery("SELECT * FROM tasks WHERE id="+(id+1), null);
-        TaskModel taskModel = new TaskModel();
-        if (cursor != null && cursor.moveToNext()) {
+        Cursor cursor = sqdb.rawQuery("SELECT * FROM tasks WHERE id=" + (id + 1), null);
+        if (cursor != null) {
+            cursor.moveToNext();
             Bundle bundle = cursor.getExtras();
             //TODO : manage data
-            taskModel = new TaskModel(
+            TaskModel taskModel = new TaskModel(
                     bundle.getString(TITLE),
                     bundle.getLong(REMINDER),
                     bundle.getBoolean(ISDONE)
-                    );
+            );
             cursor.close();
+            return taskModel;
         }
-        return taskModel;
+        return null;
+    }
+
+    public long updateTask(long id, TaskModel taskModel) {
+        sqdb = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(TITLE,taskModel.getTitle());
+        values.put(REMINDER,taskModel.getReminder());
+        values.put(ISDONE,taskModel.isDone());
+        return sqdb.update("notes",values,"id="+(id+1),null);
     }
 
     public int getTaskSize() {
         sqdb = this.getReadableDatabase();
-        Cursor cursor = sqdb.rawQuery("SELECT * FROM tasks", null);
-        int size = 0;
+        Cursor cursor = sqdb.rawQuery("SELECT COUNT(*) FROM tasks", null);
         if (cursor != null) {
-            size = cursor.getCount();
+            int count = cursor.getCount();
             cursor.close();
+            return count;
         }
-        return size;
+        return 0;
     }
 }

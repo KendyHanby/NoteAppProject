@@ -1,7 +1,6 @@
 package com.sxi.notes;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -9,19 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.sxi.notes.databinding.FragmentTaskEditorBinding;
-import com.sxi.notes.model.TaskModel;
 
 public class TaskEditorFragment extends BottomSheetDialogFragment {
 
     private FragmentTaskEditorBinding binding;
     private MySqlHelper db;
-    private OnDismiss onDismiss;
+    private OnSave onSave;
 
     public TaskEditorFragment() {
 
@@ -38,22 +33,19 @@ public class TaskEditorFragment extends BottomSheetDialogFragment {
                              Bundle savedInstanceState) {
         binding = FragmentTaskEditorBinding.inflate(inflater, container, false);
 
-        binding.button.setOnClickListener(v -> {
+        binding.save.setOnClickListener(v -> {
             String title = binding.taskTitle.getText().toString();
             long reminder = 0;
             boolean isDone = binding.taskCheck.isChecked();
-            if (db.saveTask(new TaskModel(title, reminder, isDone)) == -1) {
-                Toast.makeText(requireContext(), "Fail to save task!", Toast.LENGTH_SHORT).show();
-            }
-            onDismiss.onDismiss();
+            onSave.onSave(title,reminder,isDone);
             dismiss();
         });
 
         return binding.getRoot();
     }
 
-    public void setOnDismiss(OnDismiss onDismiss){
-        this.onDismiss = onDismiss;
+    public void setOnSave(OnSave onSave){
+        this.onSave = onSave;
     }
 
     @Override
@@ -75,7 +67,7 @@ public class TaskEditorFragment extends BottomSheetDialogFragment {
     private int dpToPx(Context context, float dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
     }
-    public interface OnDismiss{
-        void onDismiss();
+    public interface OnSave {
+        void onSave(String title, long reminder, boolean isDone);
     }
 }

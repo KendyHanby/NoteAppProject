@@ -1,47 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/round_radius_bg"
     android:layout_margin="8dp"
+    android:background="@drawable/round_radius_bg"
     android:elevation="4dp"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <CheckBox
+        android:id="@+id/task_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/task_title"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <CheckBox
-            android:id="@+id/task_check"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/task_title"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="Your task is here" />
-
-        <ImageView
-            android:id="@+id/task_ex"
-            android:padding="8dp"
-            android:scaleType="fitCenter"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_task_ex"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/task_sub"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-<!--        <include layout="@layout/list_subtask_item"/>-->
-    </LinearLayout>
+        android:layout_weight="1"
+        android:padding="8dp"
+        android:text="Your task is here" />
 
 </LinearLayout>
