@@ -1,18 +1,13 @@
-package com.sxi.notes;
-
-import static android.view.WindowInsetsAnimation.Callback.DISPATCH_MODE_STOP;
+package com.sxi.notes.ui;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Rect;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowInsets;
-import android.view.WindowInsetsAnimation;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
@@ -22,14 +17,13 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.sxi.notes.R;
+import com.sxi.notes.data.MySqlHelper;
 import com.sxi.notes.databinding.FragmentTaskEditorBinding;
-
-import java.util.List;
 
 public class TaskEditorFragment extends BottomSheetDialogFragment {
 
     private FragmentTaskEditorBinding binding;
-    private MySqlHelper db;
     private OnSave onSave;
 
     public TaskEditorFragment() {
@@ -39,7 +33,6 @@ public class TaskEditorFragment extends BottomSheetDialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db = new MySqlHelper(requireContext());
     }
 
     @Override

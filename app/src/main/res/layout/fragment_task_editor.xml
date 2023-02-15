@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/sheet_bg"
-    tools:context=".TaskEditorFragment">
+    tools:context=".ui.TaskEditorFragment">
 
     <LinearLayout
         android:id="@+id/sgt"

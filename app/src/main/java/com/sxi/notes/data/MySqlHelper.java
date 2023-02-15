@@ -1,4 +1,4 @@
-package com.sxi.notes;
+package com.sxi.notes.data;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,11 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.sxi.notes.model.NoteModel;
-import com.sxi.notes.model.TaskModel;
+import com.sxi.notes.data.model.NoteModel;
+import com.sxi.notes.data.model.TaskModel;
 
 public class MySqlHelper extends SQLiteOpenHelper {
     private SQLiteDatabase sqdb;
+    private SQLiteDatabase db2;
     Context context;
     private static final String NOTES_DB = "notes.db";
 
@@ -51,6 +52,8 @@ public class MySqlHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS notes");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS tasks");
         onCreate(sqLiteDatabase);
+
+        Log.i("tasks", "onCreate: "+getNoteSize()+" "+getTaskSize());
     }
 
     // This is the start of note section
@@ -158,6 +161,11 @@ public class MySqlHelper extends SQLiteOpenHelper {
         values.put(REMINDER, taskModel.getReminder());
         values.put(ISDONE, taskModel.isDone());
         return sqdb.update(TASK_TB, values, "id=" + (id + 1), null);
+    }
+
+    public void deleteTask(long id) {
+        sqdb = this.getWritableDatabase();
+        sqdb.delete(TASK_TB, ID + "=" + id, null);
     }
 
     public int getTaskSize() {

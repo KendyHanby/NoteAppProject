@@ -3,7 +3,6 @@ package com.sxi.notes.adapter;
 import android.content.Context;
 import android.text.SpannableString;
 import android.text.style.StrikethroughSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +13,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sxi.notes.MySqlHelper;
 import com.sxi.notes.R;
-import com.sxi.notes.model.TaskModel;
+import com.sxi.notes.data.MySqlHelper;
+import com.sxi.notes.data.model.TaskModel;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH> {
 
@@ -71,7 +70,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH> {
 
     @Override
     public int getItemCount() {
-        Log.i("taskA", "setStrike: " + db.getTaskSize());
         return db.getTaskSize();
     }
 

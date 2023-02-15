@@ -1,8 +1,6 @@
 package com.sxi.notes;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,17 +8,12 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.sxi.notes.adapter.MainPagerAdapter;
+import com.sxi.notes.data.MySqlHelper;
 import com.sxi.notes.databinding.ActivityMainBinding;
-import com.sxi.notes.ui.NoteFragment;
-import com.sxi.notes.ui.TaskFragment;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         View v = binding.getRoot();
         setContentView(v);
 
-        db = new MySqlHelper(this);
+        db = new MySqlHelper(getApplicationContext());
 
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -42,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
         // We don't use it. It mess up code.
         //Icon selected color
         //setupTabIcons();
-        binding.mainPager.setOffscreenPageLimit(1);
+        binding.mainPager.setOffscreenPageLimit(2);
+        binding.mainPager.setUserInputEnabled(true);
 
         binding.mainPager.setAdapter(new MainPagerAdapter(this));
 

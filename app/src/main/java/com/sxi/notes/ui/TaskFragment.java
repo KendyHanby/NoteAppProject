@@ -1,7 +1,5 @@
 package com.sxi.notes.ui;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.sxi.notes.MySqlHelper;
-import com.sxi.notes.NoteEditorActivity;
 import com.sxi.notes.R;
-import com.sxi.notes.TaskEditorFragment;
 import com.sxi.notes.adapter.TaskAdapter;
+import com.sxi.notes.data.MySqlHelper;
 import com.sxi.notes.databinding.FragmentTaskBinding;
-import com.sxi.notes.model.TaskModel;
+import com.sxi.notes.data.model.TaskModel;
 
 public class TaskFragment extends Fragment {
 

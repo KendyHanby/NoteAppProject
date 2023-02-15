@@ -1,4 +1,4 @@
-package com.sxi.notes.model;
+package com.sxi.notes.data.model;
 
 import androidx.annotation.Nullable;
 

@@ -3,7 +3,6 @@ package com.sxi.notes.ui;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,12 +19,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.sxi.notes.MySqlHelper;
+import com.sxi.notes.data.MySqlHelper;
 import com.sxi.notes.NoteEditorActivity;
 import com.sxi.notes.R;
 import com.sxi.notes.adapter.NoteAdapter;
 import com.sxi.notes.databinding.FragmentNoteBinding;
-import com.sxi.notes.model.NoteModel;
+import com.sxi.notes.data.model.NoteModel;
 
 public class NoteFragment extends Fragment {
 
@@ -62,7 +61,7 @@ public class NoteFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentNoteBinding.inflate(inflater, container, false);
         binding.listNote.setHasFixedSize(true);
