@@ -1,5 +1,7 @@
 package com.sxi.notes;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,13 +20,18 @@ import com.sxi.notes.data.MySqlHelper;
 import com.sxi.notes.data.model.NoteModel;
 import com.sxi.notes.data.model.TaskModel;
 import com.sxi.notes.databinding.ActivityMainBinding;
+import com.sxi.notes.service.MyNotificationReceiver;
 import com.sxi.notes.ui.NoteFragment;
 import com.sxi.notes.ui.TaskFragment;
+
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
     MySqlHelper db;
     private ActivityMainBinding binding;
+    private AlarmManager alarmManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +41,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(v);
 
         db = new MySqlHelper(getApplicationContext());
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(this, MyNotificationReceiver.class);
+        intent.putExtra("message", "Don't forget to do your task!");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        // Set the reminder to go off at a specific time
+        Calendar calendar = Calendar.getInstance();
+        /*calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);*/
+        long timeInMillis = calendar.getTimeInMillis()+5000;
+        alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent);
+
+
 
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
