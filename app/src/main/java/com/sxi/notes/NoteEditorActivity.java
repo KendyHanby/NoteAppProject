@@ -24,7 +24,7 @@ import java.util.Locale;
 public class NoteEditorActivity extends AppCompatActivity {
 
     private ActivityNoteEditorBinding binding;
-    private long date;
+    private long date,edit;
     private String dc;
 
     @SuppressLint("ResourceAsColor")
@@ -43,12 +43,22 @@ public class NoteEditorActivity extends AppCompatActivity {
             onBackPressed();
         });
 
+
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("MMMM dd h:mm", Locale.US);
-        date = calendar.getTimeInMillis();
-        dc = format.format(calendar.getTime());
-        binding.date.setText(dc.concat(" | 0 Character"));
 
+        if (getIntent().getBooleanExtra("edit",false)){
+            Bundle i = getIntent().getExtras();
+            binding.editorTitle.setText(i.getString("title"));
+            binding.editorText.setText(i.getString("text"));
+            dc = format.format(i.getLong("date"));
+            binding.date.setText(dc.concat(String.format(" | %s Character",binding.editorText.getText().length())));
+
+        } else {
+            date = calendar.getTimeInMillis();
+            dc = format.format(calendar.getTime());
+            binding.date.setText(dc.concat(" | 0 Character"));
+        }
         binding.editorText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -126,10 +136,13 @@ public class NoteEditorActivity extends AppCompatActivity {
         if (title.equals("") && text.equals("")) {
             setResult(RESULT_CANCELED);
         } else {
+
+            edit = getIntent().getBooleanExtra("edit",false)?Calendar.getInstance().getTimeInMillis():date;
             Intent intent = new Intent()
                     .putExtra("title", title)
                     .putExtra("text", text)
                     .putExtra("date", date)
+                    .putExtra("edit", edit)
                     .putExtra("theme", 0);
             setResult(RESULT_OK, intent);
         }
@@ -146,7 +159,7 @@ public class NoteEditorActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
            switch (item.getItemId()){
                case R.id.move_to:
-                   startActivity(new Intent(NoteEditorActivity.this,MoveToFolder.class));
+                   startActivity(new Intent(NoteEditorActivity.this, FolderActivity.class));
            }
 
 

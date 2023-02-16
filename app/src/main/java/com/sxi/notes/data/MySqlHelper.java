@@ -25,6 +25,7 @@ public class MySqlHelper extends SQLiteOpenHelper {
     private static final String TITLE = "title";
     private static final String FOLDER = "text";
     private static final String DATE = "date";
+    private static final String EDIT = "edit";
     private static final String THEME = "theme";
 
     // Task contents
@@ -41,7 +42,7 @@ public class MySqlHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String noteQuery = "CREATE TABLE notes(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, text TEXT,date LONG, theme INTEGER);";
+        String noteQuery = "CREATE TABLE notes(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, text TEXT,date LONG,edit LONG, theme INTEGER);";
         String taskQuery = "CREATE TABLE tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, reminder LONG, isdone INTEGER);";
         sqLiteDatabase.execSQL(noteQuery);
         sqLiteDatabase.execSQL(taskQuery);
@@ -65,6 +66,7 @@ public class MySqlHelper extends SQLiteOpenHelper {
         values.put(TITLE, model.getTitle());
         values.put(TEXT, model.getText());
         values.put(DATE, model.getDate());
+        values.put(EDIT, model.getEdit());
         values.put(THEME, model.getTheme());
         return sqdb.insert("notes", null, values);
     }
@@ -78,6 +80,7 @@ public class MySqlHelper extends SQLiteOpenHelper {
         values.put(TITLE, model.getTitle());
         values.put(TEXT, model.getText());
         values.put(DATE, model.getDate());
+        values.put(EDIT,model.getEdit());
         values.put(THEME, model.getTheme());
         return sqdb.update("notes", values, "id=" + (id+1), null);
     }
@@ -98,7 +101,7 @@ public class MySqlHelper extends SQLiteOpenHelper {
         Cursor cursor = sqdb.rawQuery("SELECT * FROM notes WHERE id=" + (id+1), null);
         NoteModel noteModel = new NoteModel();
         if (cursor != null && cursor.moveToNext()) {
-            noteModel = new NoteModel(cursor.getString(1), cursor.getString(2), cursor.getLong(3), cursor.getInt(4));
+            noteModel = new NoteModel(cursor.getString(1), cursor.getString(2), cursor.getLong(3), cursor.getLong(4),cursor.getInt(5));
             cursor.close();
         }
         return noteModel;

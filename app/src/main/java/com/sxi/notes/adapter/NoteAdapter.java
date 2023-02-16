@@ -1,16 +1,19 @@
 package com.sxi.notes.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
+import com.sxi.notes.NoteEditorActivity;
 import com.sxi.notes.data.MySqlHelper;
 import com.sxi.notes.R;
 
@@ -19,9 +22,15 @@ import java.util.Locale;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
     private final MySqlHelper db;
+    private ActivityResultLauncher<Intent> launcher;
 
     public NoteAdapter(Context context) {
         db = new MySqlHelper(context);
+    }
+
+    public NoteAdapter(Context context, ActivityResultLauncher<Intent> launcher) {
+        db = new MySqlHelper(context);
+        this.launcher = launcher;
     }
 
     @NonNull
@@ -32,6 +41,15 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
 
     @Override
     public void onBindViewHolder(@NonNull NoteVH holder, int position) {
+        holder.itemView.setOnClickListener(v->{
+            launcher.launch(new Intent(v.getContext(), NoteEditorActivity.class)
+                    .putExtra("edit",true)
+                    .putExtra("title",db.getNote(position).getTitle())
+                    .putExtra("text",db.getNote(position).getText())
+                    .putExtra("date",db.getNote(position).getDate())
+                    .putExtra("theme",db.getNote(position).getTheme())
+            );
+        });
         holder.itemView.setOnLongClickListener(view -> {
             BottomSheetDialog dialog = new BottomSheetDialog(holder.itemView.getContext());
             View root = LayoutInflater.from(dialog.getContext()).inflate(R.layout.item_options_layout,null);
