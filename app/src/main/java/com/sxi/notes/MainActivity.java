@@ -30,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
     MySqlHelper db;
     private ActivityMainBinding binding;
-    private AlarmManager alarmManager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,19 +39,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(v);
 
         db = new MySqlHelper(getApplicationContext());
-        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        Intent intent = new Intent(this, MyNotificationReceiver.class);
-        intent.putExtra("message", "Don't forget to do your task!");
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-        // Set the reminder to go off at a specific time
-        Calendar calendar = Calendar.getInstance();
-        /*calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);*/
-        long timeInMillis = calendar.getTimeInMillis()+5000;
-        alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent);
-
-
 
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
