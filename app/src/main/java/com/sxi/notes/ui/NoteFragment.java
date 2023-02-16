@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.sxi.notes.FolderActivity;
 import com.sxi.notes.data.MySqlHelper;
 import com.sxi.notes.NoteEditorActivity;
 import com.sxi.notes.R;
@@ -35,21 +36,8 @@ public class NoteFragment extends Fragment {
     private SearchView searchView;
 
     private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == RESULT_OK) {
-            Bundle bundle = result.getData().getExtras();
-            String title = bundle.getString("title"),
-                    text = bundle.getString("text");
-            long date = bundle.getLong("date"),
-                    edit = bundle.getLong("edit");
-            int theme = bundle.getInt("theme");
-            if (db.saveNote(new NoteModel(title, text, date, edit, theme)) != -1) {
-                Toast.makeText(requireContext(), "Saved", Toast.LENGTH_SHORT).show();
-                ((RecyclerView.Adapter<?>) binding.listNote.getAdapter()).notifyDataSetChanged();
-            }
-        } else if (result.getResultCode() == RESULT_CANCELED) {
-            Toast.makeText(requireContext(), "Cancel note", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(requireContext(), "Others Error", Toast.LENGTH_SHORT).show();
+        if (result.getResultCode()==RESULT_OK){
+            ((RecyclerView.Adapter<?>)binding.listNote.getAdapter()).notifyDataSetChanged();
         }
     });
 
@@ -83,11 +71,11 @@ public class NoteFragment extends Fragment {
             return false;
         });
 
-        binding.all.setOnClickListener(v ->{
+        binding.all.setOnClickListener(v -> {
             binding.listNote.scrollToPosition(0);
         });
-        binding.folder.setOnClickListener(v->{
-            startActivity(new Intent(requireContext(),null));
+        binding.folder.setOnClickListener(v -> {
+            startActivity(new Intent(requireContext(), FolderActivity.class));
         });
         return binding.getRoot();
     }
@@ -96,7 +84,9 @@ public class NoteFragment extends Fragment {
     public void onResume() {
         super.onResume();
         fab.setOnClickListener(view -> {
-            launcher.launch(new Intent(requireContext(), NoteEditorActivity.class));
+            launcher.launch(new Intent(requireContext(), NoteEditorActivity.class)
+                    .putExtra("is_edit",false)
+            );
         });
     }
 

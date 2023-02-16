@@ -17,6 +17,12 @@ public class FolderActivity extends AppCompatActivity {
         View v = binding.getRoot();
         setContentView(R.layout.activity_folder);
 
+        if (getIntent()!=null&&getIntent().getBooleanExtra("move",false)){
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        }
+
         binding.cv.setOnClickListener(view -> {
             //for new folder click
         });

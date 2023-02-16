@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
+import com.sxi.notes.data.MySqlHelper;
+import com.sxi.notes.data.model.NoteModel;
 import com.sxi.notes.databinding.ActivityNoteEditorBinding;
 
 import java.text.SimpleDateFormat;
@@ -24,8 +26,10 @@ import java.util.Locale;
 public class NoteEditorActivity extends AppCompatActivity {
 
     private ActivityNoteEditorBinding binding;
-    private long date,edit;
+    private long date, edit;
     private String dc;
+    private boolean isEditing;
+    private int id;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -47,12 +51,15 @@ public class NoteEditorActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("MMMM dd h:mm", Locale.US);
 
-        if (getIntent().getBooleanExtra("edit",false)){
+        isEditing = getIntent().getBooleanExtra("is_edit", false);
+
+        if (isEditing) {
             Bundle i = getIntent().getExtras();
             binding.editorTitle.setText(i.getString("title"));
             binding.editorText.setText(i.getString("text"));
+            id = i.getInt("id");
             dc = format.format(i.getLong("date"));
-            binding.date.setText(dc.concat(String.format(" | %s Character",binding.editorText.getText().length())));
+            binding.date.setText(dc.concat(String.format(" | %s Character", binding.editorText.getText().length())));
 
         } else {
             date = calendar.getTimeInMillis();
@@ -94,7 +101,7 @@ public class NoteEditorActivity extends AppCompatActivity {
             binding.editorText.setTextSize(18);
         } else if (fontSizeKey.equals("Large")) {
             binding.editorText.setTextSize(22);
-        }else if (fontSizeKey.equals("Huge")) {
+        } else if (fontSizeKey.equals("Huge")) {
             binding.editorText.setTextSize(26);
         } else {
             Toast.makeText(this, "Choose the size", Toast.LENGTH_SHORT).show();
@@ -112,39 +119,46 @@ public class NoteEditorActivity extends AppCompatActivity {
             binding.editorText.setTextColor(Color.BLUE);
         } else if (colorKey.equals("black")) {
             binding.editorText.setTextColor(Color.BLACK);
-        }else if (colorKey.equals("yellow")) {
+        } else if (colorKey.equals("yellow")) {
             binding.editorText.setTextColor(Color.YELLOW);
-        }else if (colorKey.equals("gray")) {
+        } else if (colorKey.equals("gray")) {
             binding.editorText.setTextColor(Color.GRAY);
-        }else if (colorKey.equals("white")) {
+        } else if (colorKey.equals("white")) {
             binding.editorText.setTextColor(Color.WHITE);
-        }
-        else {
+        } else {
             Toast.makeText(this, "Choose the color", Toast.LENGTH_SHORT).show();
         }
     }
-
-
-
-
 
 
     @Override
     public void onBackPressed() {
         String title = binding.editorTitle.getText().toString(),
                 text = binding.editorText.getText().toString();
+
+        NoteModel model = new NoteModel(
+                title,text,date,isEditing?Calendar.getInstance().getTimeInMillis():date,0
+        );
         if (title.equals("") && text.equals("")) {
             setResult(RESULT_CANCELED);
         } else {
-
-            edit = getIntent().getBooleanExtra("edit",false)?Calendar.getInstance().getTimeInMillis():date;
+            MySqlHelper db = new MySqlHelper(getApplicationContext());
+            if (isEditing){
+                db.updateNote(id,model);
+            } else {
+                db.saveNote(model);
+            }
+            setResult(RESULT_OK);
+            /*edit = isEditing ? Calendar.getInstance().getTimeInMillis() : date;
             Intent intent = new Intent()
+                    .putExtra("is_edit", isEditing)
+                    .putExtra("id",isEditing?id:0)
                     .putExtra("title", title)
                     .putExtra("text", text)
                     .putExtra("date", date)
                     .putExtra("edit", edit)
                     .putExtra("theme", 0);
-            setResult(RESULT_OK, intent);
+            setResult(RESULT_OK, intent);*/
         }
         super.onBackPressed();
     }
@@ -157,11 +171,16 @@ public class NoteEditorActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-           switch (item.getItemId()){
-               case R.id.move_to:
-                   startActivity(new Intent(NoteEditorActivity.this, FolderActivity.class));
-           }
-
+        switch (item.getTitle().toString()) {
+            case "m": {
+                startActivity(new Intent(NoteEditorActivity.this, FolderActivity.class));
+                break;
+            }
+            case "Delete": {
+                new MySqlHelper(getApplicationContext()).deleteNoteByDate(date);
+                break;
+            }
+        }
 
 
         return super.onOptionsItemSelected(item);

@@ -93,6 +93,11 @@ public class MySqlHelper extends SQLiteOpenHelper {
         sqdb.delete("notes", "id=" + (id+1), null);
     }
 
+    public void deleteNoteByDate(long date){
+        sqdb = this.getWritableDatabase();
+        sqdb.delete(NOTE_TB,"date="+date,null);
+    }
+
     /**
      * Get Note from database
      */
