@@ -1,10 +1,7 @@
 package com.sxi.notes;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,19 +9,12 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
-import com.sxi.notes.adapter.MainPagerAdapter;
 import com.sxi.notes.data.MySqlHelper;
-import com.sxi.notes.data.model.NoteModel;
-import com.sxi.notes.data.model.TaskModel;
 import com.sxi.notes.databinding.ActivityMainBinding;
-import com.sxi.notes.service.MyNotificationReceiver;
 import com.sxi.notes.ui.NoteFragment;
 import com.sxi.notes.ui.TaskFragment;
-
-import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
