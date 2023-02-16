@@ -37,12 +37,14 @@ public class NoteFragment extends Fragment {
     private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
             Bundle bundle = result.getData().getExtras();
-            String title = bundle.getString("title"), text = bundle.getString("text");
-            long date = bundle.getLong("date");
+            String title = bundle.getString("title"),
+                    text = bundle.getString("text");
+            long date = bundle.getLong("date"),
+                    edit = bundle.getLong("edit");
             int theme = bundle.getInt("theme");
-            if (db.saveNote(new NoteModel(title, text, date, theme)) != -1) {
+            if (db.saveNote(new NoteModel(title, text, date, edit, theme)) != -1) {
                 Toast.makeText(requireContext(), "Saved", Toast.LENGTH_SHORT).show();
-                ((RecyclerView.Adapter<?>)binding.listNote.getAdapter()).notifyDataSetChanged();
+                ((RecyclerView.Adapter<?>) binding.listNote.getAdapter()).notifyDataSetChanged();
             }
         } else if (result.getResultCode() == RESULT_CANCELED) {
             Toast.makeText(requireContext(), "Cancel note", Toast.LENGTH_SHORT).show();
@@ -69,7 +71,7 @@ public class NoteFragment extends Fragment {
         binding.listNote.setHasFixedSize(true);
 
         binding.listNote.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
-        binding.listNote.setAdapter(new NoteAdapter(requireContext()));
+        binding.listNote.setAdapter(new NoteAdapter(requireContext(), launcher));
 
         fab = requireActivity().findViewById(R.id.main_fab);
         searchView = requireActivity().findViewById(R.id.main_search);
@@ -79,6 +81,13 @@ public class NoteFragment extends Fragment {
         searchView.setOnCloseListener(() -> {
             fab.show();
             return false;
+        });
+
+        binding.all.setOnClickListener(v ->{
+            binding.listNote.scrollToPosition(0);
+        });
+        binding.folder.setOnClickListener(v->{
+            startActivity(new Intent(requireContext(),null));
         });
         return binding.getRoot();
     }

@@ -12,7 +12,7 @@
         android:theme="@style/Theme.Setting_Features"
         tools:targetApi="31">
         <activity
-            android:name=".MoveToFolder"
+            android:name=".FolderActivity"
             android:exported="false" />
         <activity
             android:name=".NoteEditorActivity"
