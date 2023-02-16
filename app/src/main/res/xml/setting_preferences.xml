@@ -7,13 +7,14 @@
        >
 
       <Preference
-          android:icon="@drawable/forward_arrow"
+          android:icon="@drawable/cloud_icon"
           android:title="Xiaomi Cloud"
           android:summary="Synced with the cloud"
           />
        <Preference
            android:title="Deleted notes in the cloud"
-           android:icon="@drawable/forward_arrow"
+           android:icon="@drawable/delete_icon"
+           android:summary="Coming soon!"
            />
    </PreferenceCategory>
 
@@ -26,25 +27,26 @@
                app:entries="@array/font_list"
                android:entryValues="@array/font_list"
                 android:key="@string/pref_text_key"
-               android:icon="@drawable/img"
+               android:icon="@drawable/font_size_icon"
                android:title="Font size"
                />
 
            <ListPreference
+               android:summary="Coming soon!"
                android:key="Sort"
                android:defaultValue="By creation date"
                app:entries="@array/sort_list"
                android:entryValues="@array/sort_list"
                android:title="Sort"
-               android:icon="@drawable/img"
+               android:icon="@drawable/sort_icon"
                />
 
            <PreferenceCategory
                android:title="QUICK FEATURES">
 
                <Preference
-
-                   android:icon="@drawable/forward_arrow"
+                    android:summary="Coming soon!"
+                   android:icon="@drawable/baseline_note_alt_24"
                    android:title="Quick notes"
                    />
 
@@ -55,6 +57,7 @@
     android:title="REMINDERS">
 
     <SwitchPreference
+        android:icon="@drawable/reminder_icon"
             android:title="High-priority reminders
                             "
         android:summary="Play sound even when Silent or
@@ -68,7 +71,7 @@
     <PreferenceCategory
         android:title="OTHER">
         <Preference
-            android:icon="@drawable/forward_arrow"
+            android:icon="@drawable/privacy_icon"
             android:title="Privacy Policy"
             />
 
