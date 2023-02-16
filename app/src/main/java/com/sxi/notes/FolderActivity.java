@@ -8,7 +8,8 @@ import android.view.View;
 import com.sxi.notes.databinding.ActivityFolderBinding;
 
 public class FolderActivity extends AppCompatActivity {
-            ActivityFolderBinding binding;
+    ActivityFolderBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

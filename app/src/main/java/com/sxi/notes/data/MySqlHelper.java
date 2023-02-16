@@ -66,6 +66,7 @@ public class MySqlHelper extends SQLiteOpenHelper {
         values.put(TITLE, model.getTitle());
         values.put(TEXT, model.getText());
         values.put(DATE, model.getDate());
+        values.put(EDIT, model.getEdit());
         values.put(THEME, model.getTheme());
         return sqdb.insert("notes", null, values);
     }
@@ -79,6 +80,7 @@ public class MySqlHelper extends SQLiteOpenHelper {
         values.put(TITLE, model.getTitle());
         values.put(TEXT, model.getText());
         values.put(DATE, model.getDate());
+        values.put(EDIT,model.getEdit());
         values.put(THEME, model.getTheme());
         return sqdb.update("notes", values, "id=" + (id+1), null);
     }

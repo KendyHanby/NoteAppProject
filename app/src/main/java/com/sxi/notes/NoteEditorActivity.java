@@ -52,6 +52,8 @@ public class NoteEditorActivity extends AppCompatActivity {
             binding.editorTitle.setText(i.getString("title"));
             binding.editorText.setText(i.getString("text"));
             dc = format.format(i.getLong("date"));
+            binding.date.setText(dc.concat(String.format(" | %s Character",binding.editorText.getText().length())));
+
         } else {
             date = calendar.getTimeInMillis();
             dc = format.format(calendar.getTime());
@@ -134,6 +136,8 @@ public class NoteEditorActivity extends AppCompatActivity {
         if (title.equals("") && text.equals("")) {
             setResult(RESULT_CANCELED);
         } else {
+
+            edit = getIntent().getBooleanExtra("edit",false)?Calendar.getInstance().getTimeInMillis():date;
             Intent intent = new Intent()
                     .putExtra("title", title)
                     .putExtra("text", text)

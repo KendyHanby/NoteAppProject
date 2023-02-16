@@ -28,6 +28,10 @@ public class NoteModel {
         return date;
     }
 
+    public long getEdit() {
+        return edit;
+    }
+
     public int getTheme() {
         return theme;
     }
