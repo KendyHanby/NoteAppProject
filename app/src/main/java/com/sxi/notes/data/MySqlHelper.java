@@ -52,8 +52,6 @@ public class MySqlHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS notes");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS tasks");
         onCreate(sqLiteDatabase);
-
-        Log.i("tasks", "onCreate: "+getNoteSize()+" "+getTaskSize());
     }
 
     // This is the start of note section

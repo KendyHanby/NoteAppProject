@@ -39,6 +39,7 @@
                     app:tabIconTint="@color/tab_color_state"
                     app:tabIndicatorHeight="0dp"
                     app:tabInlineLabel="false"
+                    app:tabRippleColor="@android:color/transparent"
                     app:tabMode="fixed">
 
                     <!--TODO : Change Icon-->
@@ -72,10 +73,11 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/main_pager"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent"
+            android:id="@+id/main_frame"/>
+
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

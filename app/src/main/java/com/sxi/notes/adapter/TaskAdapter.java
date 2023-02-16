@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sxi.notes.R;
 import com.sxi.notes.data.MySqlHelper;
 import com.sxi.notes.data.model.TaskModel;
+import com.sxi.notes.ui.TaskEditorFragment;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH> {
 
@@ -34,7 +35,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH> {
     @Override
     public void onBindViewHolder(@NonNull TVH holder, int position) {
 
-        // TODO here
         setStrike(holder.taskTitle, db.getTask(position).getTitle(), db.getTask(position).isDone());
 
         holder.taskCheck.setChecked(db.getTask(position).isDone());

@@ -22,7 +22,6 @@ public class TaskFragment extends Fragment {
     private FragmentTaskBinding binding;
     private MySqlHelper db;
     private FloatingActionButton fab;
-    private TaskEditorFragment editorFragment;
 
     public TaskFragment() {
         // Required empty public constructor
@@ -41,10 +40,9 @@ public class TaskFragment extends Fragment {
 
         binding.listTask.setHasFixedSize(true);
         binding.listTask.setLayoutManager(new LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false));
-        binding.listTask.setAdapter(new TaskAdapter(requireContext()));
+        binding.listTask.setAdapter(new TaskAdapter(getActivity()));
 
         fab = requireActivity().findViewById(R.id.main_fab);
-        editorFragment = new TaskEditorFragment();
         return binding.getRoot();
     }
 
@@ -52,6 +50,7 @@ public class TaskFragment extends Fragment {
     public void onResume() {
         super.onResume();
         fab.setOnClickListener(view -> {
+            TaskEditorFragment editorFragment = new TaskEditorFragment();
             editorFragment.show(getChildFragmentManager(),null);
             editorFragment.setOnSave((title, reminder, isDone) -> {
                 if (db.saveTask(new TaskModel(title,reminder,isDone))==-1) {
