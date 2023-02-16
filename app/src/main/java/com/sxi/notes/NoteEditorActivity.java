@@ -27,7 +27,7 @@ public class NoteEditorActivity extends AppCompatActivity {
 
     private ActivityNoteEditorBinding binding;
     private long date, edit;
-    private String dc;
+    private String dateInText;
     private boolean isEditing;
     private int id;
 
@@ -58,13 +58,13 @@ public class NoteEditorActivity extends AppCompatActivity {
             binding.editorTitle.setText(i.getString("title"));
             binding.editorText.setText(i.getString("text"));
             id = i.getInt("id");
-            dc = format.format(i.getLong("date"));
-            binding.date.setText(dc.concat(String.format(" | %s Character", binding.editorText.getText().length())));
+            dateInText = format.format(i.getLong("date"));
+            binding.date.setText(dateInText.concat(String.format(" | %s Character", binding.editorText.getText().length())));
 
         } else {
             date = calendar.getTimeInMillis();
-            dc = format.format(calendar.getTime());
-            binding.date.setText(dc.concat(" | 0 Character"));
+            dateInText = format.format(calendar.getTime());
+            binding.date.setText(dateInText.concat(" | 0 Character"));
         }
         binding.editorText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -78,9 +78,9 @@ public class NoteEditorActivity extends AppCompatActivity {
                         .replace(" ", "")
                         .replace("\n", "").length();
                 if (length < 2) {
-                    binding.date.setText(String.format(dc.concat(" | %s Character"), length));
+                    binding.date.setText(String.format(dateInText.concat(" | %s Character"), length));
                 } else {
-                    binding.date.setText(String.format(dc.concat(" | %s Characters"), length));
+                    binding.date.setText(String.format(dateInText.concat(" | %s Characters"), length));
                 }
             }
 
@@ -149,16 +149,6 @@ public class NoteEditorActivity extends AppCompatActivity {
                 db.saveNote(model);
             }
             setResult(RESULT_OK);
-            /*edit = isEditing ? Calendar.getInstance().getTimeInMillis() : date;
-            Intent intent = new Intent()
-                    .putExtra("is_edit", isEditing)
-                    .putExtra("id",isEditing?id:0)
-                    .putExtra("title", title)
-                    .putExtra("text", text)
-                    .putExtra("date", date)
-                    .putExtra("edit", edit)
-                    .putExtra("theme", 0);
-            setResult(RESULT_OK, intent);*/
         }
         super.onBackPressed();
     }
@@ -172,12 +162,26 @@ public class NoteEditorActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getTitle().toString()) {
-            case "m": {
+            case "Reminder":{
+                // TODO reminder
+                break;
+            }
+            case "Theme":{
+                // TODO theme
+                break;
+            }
+            case "Share":{
+                startActivity(Intent.createChooser(new Intent().setAction(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT,binding.editorText.getText().toString()),"Share to..."));
+                break;
+            }
+            case "Move to": {
                 startActivity(new Intent(NoteEditorActivity.this, FolderActivity.class));
                 break;
             }
             case "Delete": {
                 new MySqlHelper(getApplicationContext()).deleteNoteByDate(date);
+                setResult(RESULT_OK);
+                finish();
                 break;
             }
         }
