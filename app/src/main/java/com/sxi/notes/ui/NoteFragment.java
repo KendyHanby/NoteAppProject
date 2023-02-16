@@ -14,6 +14,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +32,7 @@ public class NoteFragment extends Fragment {
     private FragmentNoteBinding binding;
     private MySqlHelper db;
     private FloatingActionButton fab;
+    private SearchView searchView;
 
     private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
@@ -65,10 +67,19 @@ public class NoteFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentNoteBinding.inflate(inflater, container, false);
         binding.listNote.setHasFixedSize(true);
+
         binding.listNote.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
         binding.listNote.setAdapter(new NoteAdapter(requireContext()));
 
         fab = requireActivity().findViewById(R.id.main_fab);
+        searchView = requireActivity().findViewById(R.id.main_search);
+        searchView.setOnSearchClickListener(view -> {
+            fab.hide();
+        });
+        searchView.setOnCloseListener(() -> {
+            fab.show();
+            return false;
+        });
         return binding.getRoot();
     }
 
@@ -78,13 +89,13 @@ public class NoteFragment extends Fragment {
         fab.setOnClickListener(view -> {
             launcher.launch(new Intent(requireContext(), NoteEditorActivity.class));
         });
-
     }
 
     @Override
     public void onPause() {
         super.onPause();
         fab.setOnClickListener(null);
+        searchView.setIconified(true);
     }
 
 }

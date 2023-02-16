@@ -79,7 +79,7 @@ public class MySqlHelper extends SQLiteOpenHelper {
         values.put(TEXT, model.getText());
         values.put(DATE, model.getDate());
         values.put(THEME, model.getTheme());
-        return sqdb.update("notes", values, "id=" + (id + 1), null);
+        return sqdb.update("notes", values, "id=" + (id+1), null);
     }
 
     /**
@@ -87,7 +87,7 @@ public class MySqlHelper extends SQLiteOpenHelper {
      */
     public void deleteNote(long id) {
         sqdb = this.getWritableDatabase();
-        sqdb.delete("notes", "id=" + id, null);
+        sqdb.delete("notes", "id=" + (id+1), null);
     }
 
     /**
@@ -95,9 +95,9 @@ public class MySqlHelper extends SQLiteOpenHelper {
      */
     public NoteModel getNote(long id) {
         sqdb = this.getReadableDatabase();
-        Cursor cursor = sqdb.rawQuery("SELECT * FROM notes WHERE id=" + (id + 1), null);
+        Cursor cursor = sqdb.rawQuery("SELECT * FROM notes WHERE id=" + (id+1), null);
         NoteModel noteModel = new NoteModel();
-        if (cursor != null && cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToNext()) {
             noteModel = new NoteModel(cursor.getString(1), cursor.getString(2), cursor.getLong(3), cursor.getInt(4));
             cursor.close();
         }
@@ -139,8 +139,8 @@ public class MySqlHelper extends SQLiteOpenHelper {
         // TODO : unfinished
 
         sqdb = this.getReadableDatabase();
-        Cursor cursor = sqdb.rawQuery("SELECT * FROM tasks WHERE id=" + (id + 1), null);
-        if (cursor != null && cursor.moveToFirst()) {
+        Cursor cursor = sqdb.rawQuery("SELECT * FROM tasks WHERE id=" + (id+1), null);
+        if (cursor != null && cursor.moveToNext()) {
             TaskModel taskModel = new TaskModel(
                     cursor.getString(1),
                     cursor.getLong(2),
@@ -158,12 +158,12 @@ public class MySqlHelper extends SQLiteOpenHelper {
         values.put(TITLE, taskModel.getTitle());
         values.put(REMINDER, taskModel.getReminder());
         values.put(ISDONE, taskModel.isDone());
-        return sqdb.update(TASK_TB, values, "id=" + (id + 1), null);
+        return sqdb.update(TASK_TB, values, "id=" + (id+1), null);
     }
 
     public void deleteTask(long id) {
         sqdb = this.getWritableDatabase();
-        sqdb.delete(TASK_TB, ID + "=" + id, null);
+        sqdb.delete(TASK_TB, ID + "=" + (id+1), null);
     }
 
     public int getTaskSize() {

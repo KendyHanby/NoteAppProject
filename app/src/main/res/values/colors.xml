@@ -11,4 +11,7 @@
     <color name="unselected_color">#949494</color>
     <color name="pink">#F34681</color>
     <color name="orange">#FF5722</color>
+
+    <color name="selected">#949494</color>
+    <color name="pressed">#6E6E6E</color>
 </resources>

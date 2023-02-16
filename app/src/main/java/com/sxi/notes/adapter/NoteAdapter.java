@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.button.MaterialButton;
 import com.sxi.notes.data.MySqlHelper;
 import com.sxi.notes.R;
 
@@ -30,6 +32,24 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
 
     @Override
     public void onBindViewHolder(@NonNull NoteVH holder, int position) {
+        holder.itemView.setOnLongClickListener(view -> {
+            BottomSheetDialog dialog = new BottomSheetDialog(holder.itemView.getContext());
+            View root = LayoutInflater.from(dialog.getContext()).inflate(R.layout.item_options_layout,null);
+            MaterialButton delete = root.findViewById(R.id.item_del);
+            MaterialButton move = root.findViewById(R.id.item_mov);
+            delete.setOnClickListener(v->{
+                db.deleteNote(position);
+                notifyItemRemoved(position);
+                dialog.dismiss();
+            });
+            move.setOnClickListener(v->{
+
+                dialog.dismiss();
+            });
+            dialog.setContentView(root);
+            dialog.show();
+            return true;
+        });
         holder.title.setText(db.getNote(position).getTitle());
         holder.text.setText(db.getNote(position).getText());
         holder.date.setText(new SimpleDateFormat("hh:mm MMM d, yyyy", Locale.US).format(db.getNote(position).getDate()));
