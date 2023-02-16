@@ -13,6 +13,8 @@
     <item android:title="Reminder" />
     <item android:title="Hide" />
     <item android:title="Place on Home screen" />
-    <item android:title="Move to" />
+    <item
+        android:id="@+id/move_to"
+        android:title="Move to" />
     <item android:title="Delete" />
 </menu>

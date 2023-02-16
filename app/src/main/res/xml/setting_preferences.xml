@@ -29,13 +29,7 @@
                android:icon="@drawable/img"
                android:title="Font size"
                />
-           <ListPreference
-               android:icon="@drawable/img"
-               android:key="@string/pref_text_color_key"
-               android:title="Text color"
-               android:summary="Choose the text color"
-               android:entries="@array/text_color_entries"
-               android:entryValues="@array/text_color_entry_values" />
+
            <ListPreference
                android:key="Sort"
                android:defaultValue="By creation date"

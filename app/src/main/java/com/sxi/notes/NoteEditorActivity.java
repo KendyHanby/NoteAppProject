@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -145,6 +144,12 @@ public class NoteEditorActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+           switch (item.getItemId()){
+               case R.id.move_to:
+                   startActivity(new Intent(NoteEditorActivity.this,MoveToFolder.class));
+           }
+
+
 
         return super.onOptionsItemSelected(item);
     }

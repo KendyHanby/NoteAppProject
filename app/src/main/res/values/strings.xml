@@ -30,25 +30,7 @@
         <item>22</item>
         <item>26</item>
     </integer-array>
-    <string-array name="text_color_entries">
-        <item>Red</item>
-        <item>Green</item>
-        <item>Blue</item>
-        <item>Black</item>
-        <item>Yellow</item>
-        <item>Gray</item>
-        <item>White</item>
-    </string-array>
 
-    <string-array name="text_color_entry_values">
-        <item>red</item>
-        <item>green</item>
-        <item>blue</item>
-        <item>black</item>
-        <item>yellow</item>
-        <item>gray</item>
-        <item>white</item>
-    </string-array>
 
     <string-array name="sort_list">
         <item>By creation date</item>
