@@ -48,6 +48,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
                     .putExtra("title", db.getNote(position).getTitle())
                     .putExtra("text", db.getNote(position).getText())
                     .putExtra("date", db.getNote(position).getDate())
+                    .putExtra("edit", db.getNote(position).getEdit())
                     .putExtra("theme", db.getNote(position).getTheme())
             );
         });
@@ -57,7 +58,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
             MaterialButton delete = root.findViewById(R.id.item_del);
             MaterialButton move = root.findViewById(R.id.item_mov);
             delete.setOnClickListener(v -> {
-                db.deleteNote(position);
+                db.deleteNoteByDate(db.getNote(position).getDate());
                 notifyItemRemoved(position);
                 dialog.dismiss();
             });

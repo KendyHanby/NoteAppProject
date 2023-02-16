@@ -58,7 +58,8 @@ public class NoteEditorActivity extends AppCompatActivity {
             binding.editorTitle.setText(i.getString("title"));
             binding.editorText.setText(i.getString("text"));
             id = i.getInt("id");
-            dateInText = format.format(i.getLong("date"));
+            date = i.getLong("date");
+            dateInText = format.format(i.getLong("edit"));
             binding.date.setText(dateInText.concat(String.format(" | %s Character", binding.editorText.getText().length())));
 
         } else {
