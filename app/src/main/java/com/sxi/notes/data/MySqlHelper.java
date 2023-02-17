@@ -100,7 +100,7 @@ public class MySqlHelper extends SQLiteOpenHelper {
         sqdb.delete(NOTE_TB,DATE+"="+date,null);
     }
 
-    public List<NoteModel> filterNoteSize(String query){
+    public List<NoteModel> getFilterNotes(String query){
         sqdb = this.getReadableDatabase();
         List<NoteModel> list = new ArrayList<>();
         Cursor cursor = sqdb.rawQuery("SELECT * FROM notes WHERE LOWER(text) LIKE '%"+query+"%' OR LOWER(title) LIKE '%"+query+"%'",null);
@@ -159,7 +159,7 @@ public class MySqlHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(TITLE, taskModel.getTitle());
         values.put(REMINDER, taskModel.getReminder());
-        values.put(ISDONE, taskModel.isDoneInt());
+        values.put(ISDONE, taskModel.getStatusInt());
         return sqdb.insert(TASK_TB, null, values);
     }
 
@@ -186,7 +186,7 @@ public class MySqlHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(TITLE, taskModel.getTitle());
         values.put(REMINDER, taskModel.getReminder());
-        values.put(ISDONE, taskModel.isDone());
+        values.put(ISDONE, taskModel.getStatus());
         return sqdb.update(TASK_TB, values, "id=" + (id+1), null);
     }
 
@@ -200,7 +200,7 @@ public class MySqlHelper extends SQLiteOpenHelper {
         sqdb.delete(TASK_TB,TITLE+"="+title,null);
     }
 
-    public List<TaskModel> filterTaskSize(String query){
+    public List<TaskModel> getFilterTasks(String query){
         sqdb = this.getReadableDatabase();
         List<TaskModel> models = new ArrayList<>();
         Cursor cursor = sqdb.rawQuery("",null);

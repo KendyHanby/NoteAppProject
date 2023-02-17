@@ -39,7 +39,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
 
     public NoteAdapter(MySqlHelper db, String query, ActivityResultLauncher<Intent> launcher) {
         this.db = db;
-        this.list = db.filterNoteSize(query);
+        this.list = db.getFilterNotes(query);
         this.launcher = launcher;
     }
 
@@ -78,7 +78,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
                     list.remove(position);
                 }
                 db.deleteNoteByDate(date);
-                notifyItemRemoved(position);
+                notifyDataSetChanged();
                 dialog.dismiss();
             });
             move.setOnClickListener(v -> {

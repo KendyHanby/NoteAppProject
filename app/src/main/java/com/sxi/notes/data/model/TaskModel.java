@@ -1,9 +1,5 @@
 package com.sxi.notes.data.model;
 
-import androidx.annotation.Nullable;
-
-import java.util.List;
-
 public class TaskModel {
     private String title;
     private long reminder;
@@ -32,11 +28,11 @@ public class TaskModel {
         return reminder;
     }
 
-    public boolean isDone() {
+    public boolean getStatus() {
         return isDone;
     }
 
-    public int isDoneInt(){
+    public int getStatusInt(){
         return isDone?1:0;
     }
 }

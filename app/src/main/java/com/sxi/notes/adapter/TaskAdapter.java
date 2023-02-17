@@ -1,6 +1,5 @@
 package com.sxi.notes.adapter;
 
-import android.content.Context;
 import android.text.SpannableString;
 import android.text.style.StrikethroughSpan;
 import android.view.LayoutInflater;
@@ -16,22 +15,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sxi.notes.R;
 import com.sxi.notes.data.MySqlHelper;
 import com.sxi.notes.data.model.TaskModel;
-import com.sxi.notes.ui.TaskEditorFragment;
+
+import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH> {
 
     private final MySqlHelper db;
     private final String query;
+    private List<TaskModel> list;
 
     public TaskAdapter(MySqlHelper db){
         this.db = db;
         query = null;
+        list = null;
     }
 
     public TaskAdapter(MySqlHelper db,String query){
         this.db = db;
         this.query = query;
-
+        list = db.getFilterTasks(query);
     }
 
     @NonNull
@@ -43,22 +45,28 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH> {
     @Override
     public void onBindViewHolder(@NonNull TVH holder, int position) {
 
-        setStrike(holder.taskTitle, db.getTask(position).getTitle(), db.getTask(position).isDone());
+        String title = query==null?db.getTask(position).getTitle():list.get(position).getTitle();
+        long reminder = query==null?db.getTask(position).getReminder():list.get(position).getReminder();
+        boolean isDone = query==null?db.getTask(position).getStatus():list.get(position).getStatus();
 
-        holder.taskCheck.setChecked(db.getTask(position).isDone());
+        setStrike(holder.taskTitle, title , isDone);
+
+        holder.taskCheck.setChecked(isDone);
 
         // for check done effect
         holder.taskCheck.setOnCheckedChangeListener((compoundButton, b) -> {
             // save check state to database
             TaskModel model = db.getTask(position);
-            if (db.updateTask(position, new TaskModel(model.getTitle(), model.getReminder(), b)) == -1) {
+            if (db.updateTask(position, new TaskModel(title, reminder, b)) == -1) {
                 Toast.makeText(holder.itemView.getContext(), "Have a problem!", Toast.LENGTH_SHORT).show();
+            } else if (query!=null){
+                list.set(position,new TaskModel(title,reminder,b));
             }
 
             // checked strike-through effect
-            SpannableString string = new SpannableString(holder.taskTitle.getText().toString());
+            SpannableString string = new SpannableString(title);
             if (b) {
-                string.setSpan(new StrikethroughSpan(), 0, holder.taskTitle.getText().length(), 0);
+                string.setSpan(new StrikethroughSpan(), 0, title.length(), 0);
             } else {
                 string.removeSpan(new StrikethroughSpan());
             }
@@ -79,7 +87,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH> {
     @Override
     public int getItemCount() {
         if (query!=null){
-            db.filterTaskSize(query);
+            return list.size();
         }
         return db.getTaskSize();
     }
