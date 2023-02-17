@@ -5,6 +5,7 @@ import static android.app.Activity.RESULT_OK;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,8 @@ import com.sxi.notes.adapter.NoteAdapter;
 import com.sxi.notes.databinding.FragmentNoteBinding;
 import com.sxi.notes.data.model.NoteModel;
 
+import java.util.Objects;
+
 public class NoteFragment extends Fragment {
 
     private FragmentNoteBinding binding;
@@ -37,7 +40,11 @@ public class NoteFragment extends Fragment {
 
     private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode()==RESULT_OK){
-            ((RecyclerView.Adapter<?>)binding.listNote.getAdapter()).notifyDataSetChanged();
+            if (result.getData().getIntExtra("is",-1)!=-1){
+                Log.i("ddd", ":it work ");
+                ((RecyclerView.Adapter<?>) binding.listNote.getAdapter()).notifyItemChanged(result.getData().getExtras().getInt("id"));
+            }
+            ((RecyclerView.Adapter<?>) binding.listNote.getAdapter()).notifyDataSetChanged();
         }
     });
 
@@ -56,12 +63,17 @@ public class NoteFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentNoteBinding.inflate(inflater, container, false);
-        binding.listNote.setHasFixedSize(true);
 
+        binding.listNote.setHasFixedSize(true);
         binding.listNote.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
-        binding.listNote.setAdapter(new NoteAdapter(requireContext(), launcher));
+        binding.listNote.setAdapter(new NoteAdapter(db, launcher));
 
         fab = requireActivity().findViewById(R.id.main_fab);
+        fab.setOnClickListener(view -> {
+            launcher.launch(new Intent(requireContext(), NoteEditorActivity.class)
+                    .putExtra("id",-1)
+            );
+        });
         searchView = requireActivity().findViewById(R.id.main_search);
         searchView.setOnSearchClickListener(view -> {
             fab.hide();
@@ -69,6 +81,22 @@ public class NoteFragment extends Fragment {
         searchView.setOnCloseListener(() -> {
             fab.show();
             return false;
+        });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.equals("")){
+                    binding.listNote.setAdapter(new NoteAdapter(db,launcher));
+                } else {
+                    binding.listNote.setAdapter(new NoteAdapter(db,newText,launcher));
+                }
+                return true;
+            }
         });
 
         binding.all.setOnClickListener(v -> {
@@ -79,22 +107,4 @@ public class NoteFragment extends Fragment {
         });
         return binding.getRoot();
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        fab.setOnClickListener(view -> {
-            launcher.launch(new Intent(requireContext(), NoteEditorActivity.class)
-                    .putExtra("is_edit",false)
-            );
-        });
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        fab.setOnClickListener(null);
-        searchView.setIconified(true);
-    }
-
 }

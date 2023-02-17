@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,7 +22,6 @@ public class TaskFragment extends Fragment {
 
     private FragmentTaskBinding binding;
     private MySqlHelper db;
-    private FloatingActionButton fab;
 
     public TaskFragment() {
         // Required empty public constructor
@@ -40,15 +40,9 @@ public class TaskFragment extends Fragment {
 
         binding.listTask.setHasFixedSize(true);
         binding.listTask.setLayoutManager(new LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false));
-        binding.listTask.setAdapter(new TaskAdapter(getActivity()));
+        binding.listTask.setAdapter(new TaskAdapter(db));
 
-        fab = requireActivity().findViewById(R.id.main_fab);
-        return binding.getRoot();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
+        FloatingActionButton fab = requireActivity().findViewById(R.id.main_fab);
         fab.setOnClickListener(view -> {
             TaskEditorFragment editorFragment = new TaskEditorFragment();
             editorFragment.show(getChildFragmentManager(),null);
@@ -59,11 +53,24 @@ public class TaskFragment extends Fragment {
                 ((RecyclerView.Adapter<?>)binding.listTask.getAdapter()).notifyDataSetChanged();
             });
         });
-    }
+        SearchView searchView = requireActivity().findViewById(R.id.main_search);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        fab.setOnClickListener(null);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.equals("")){
+                    binding.listTask.setAdapter(new TaskAdapter(db));
+                } else {
+                    binding.listTask.setAdapter(new TaskAdapter(db,newText));
+                }
+                return true;
+            }
+        });
+        return binding.getRoot();
     }
 }

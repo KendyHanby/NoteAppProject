@@ -5,10 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.sxi.notes.data.model.NoteModel;
 import com.sxi.notes.data.model.TaskModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MySqlHelper extends SQLiteOpenHelper {
     private SQLiteDatabase sqdb;
@@ -95,7 +97,26 @@ public class MySqlHelper extends SQLiteOpenHelper {
 
     public void deleteNoteByDate(long date){
         sqdb = this.getWritableDatabase();
-        sqdb.delete(NOTE_TB,"date="+date,null);
+        sqdb.delete(NOTE_TB,DATE+"="+date,null);
+    }
+
+    public List<NoteModel> filterNoteSize(String query){
+        sqdb = this.getReadableDatabase();
+        List<NoteModel> list = new ArrayList<>();
+        Cursor cursor = sqdb.rawQuery("SELECT * FROM notes WHERE LOWER(text) LIKE '%"+query+"%' OR LOWER(title) LIKE '%"+query+"%'",null);
+        while (cursor!=null&&cursor.moveToNext()){
+            NoteModel model = new NoteModel(
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getLong(3),
+                    cursor.getLong(4),
+                    cursor.getInt(5)
+            );
+            list.add(model);
+        }
+        assert cursor != null;
+        cursor.close();
+        return list;
     }
 
     /**
@@ -174,6 +195,27 @@ public class MySqlHelper extends SQLiteOpenHelper {
         sqdb.delete(TASK_TB, ID + "=" + (id+1), null);
     }
 
+    public void deleteTaskByTitle(String title){
+        sqdb = this.getWritableDatabase();
+        sqdb.delete(TASK_TB,TITLE+"="+title,null);
+    }
+
+    public List<TaskModel> filterTaskSize(String query){
+        sqdb = this.getReadableDatabase();
+        List<TaskModel> models = new ArrayList<>();
+        Cursor cursor = sqdb.rawQuery("",null);
+        while (cursor!=null && cursor.moveToNext()){
+            TaskModel taskModel = new TaskModel(
+                    cursor.getString(1),
+                    cursor.getLong(2),
+                    cursor.getInt(3)
+            );
+            models.add(taskModel);
+        }
+        assert cursor != null;
+        cursor.close();
+        return models;
+    }
     public int getTaskSize() {
         sqdb = this.getReadableDatabase();
         Cursor cursor = sqdb.rawQuery("SELECT id FROM tasks", null);

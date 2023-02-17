@@ -21,9 +21,17 @@ import com.sxi.notes.ui.TaskEditorFragment;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH> {
 
     private final MySqlHelper db;
+    private final String query;
 
-    public TaskAdapter(Context context) {
-        db = new MySqlHelper(context);
+    public TaskAdapter(MySqlHelper db){
+        this.db = db;
+        query = null;
+    }
+
+    public TaskAdapter(MySqlHelper db,String query){
+        this.db = db;
+        this.query = query;
+
     }
 
     @NonNull
@@ -70,6 +78,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH> {
 
     @Override
     public int getItemCount() {
+        if (query!=null){
+            db.filterTaskSize(query);
+        }
         return db.getTaskSize();
     }
 

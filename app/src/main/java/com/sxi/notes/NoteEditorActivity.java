@@ -26,6 +26,7 @@ import java.util.Locale;
 public class NoteEditorActivity extends AppCompatActivity {
 
     private ActivityNoteEditorBinding binding;
+    private MySqlHelper db;
     private long date, edit;
     private String dateInText;
     private boolean isEditing;
@@ -43,6 +44,8 @@ public class NoteEditorActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        db = new MySqlHelper(getApplicationContext());
+
         binding.toolbar.setNavigationOnClickListener(view -> {
             onBackPressed();
         });
@@ -51,15 +54,14 @@ public class NoteEditorActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("MMMM dd h:mm", Locale.US);
 
-        isEditing = getIntent().getBooleanExtra("is_edit", false);
+        isEditing = getIntent().getIntExtra("id", -1)!=-1;
 
         if (isEditing) {
-            Bundle i = getIntent().getExtras();
-            binding.editorTitle.setText(i.getString("title"));
-            binding.editorText.setText(i.getString("text"));
-            id = i.getInt("id");
-            date = i.getLong("date");
-            dateInText = format.format(i.getLong("edit"));
+            id = getIntent().getIntExtra("id",-1);
+            binding.editorTitle.setText(db.getNote(id).getTitle());
+            binding.editorText.setText(db.getNote(id).getText());
+            date = db.getNote(id).getDate();
+            dateInText = format.format(db.getNote(id).getEdit());
             binding.date.setText(dateInText.concat(String.format(" | %s Character", binding.editorText.getText().length())));
 
         } else {
@@ -138,18 +140,21 @@ public class NoteEditorActivity extends AppCompatActivity {
                 text = binding.editorText.getText().toString();
 
         NoteModel model = new NoteModel(
-                title,text,date,isEditing?Calendar.getInstance().getTimeInMillis():date,0
+                title,
+                text,
+                date,
+                isEditing?Calendar.getInstance().getTimeInMillis():date,
+                0
         );
         if (title.equals("") && text.equals("")) {
             setResult(RESULT_CANCELED);
         } else {
-            MySqlHelper db = new MySqlHelper(getApplicationContext());
             if (isEditing){
                 db.updateNote(id,model);
             } else {
                 db.saveNote(model);
             }
-            setResult(RESULT_OK);
+            setResult(RESULT_OK,new Intent());
         }
         super.onBackPressed();
     }
@@ -180,8 +185,10 @@ public class NoteEditorActivity extends AppCompatActivity {
                 break;
             }
             case "Delete": {
-                new MySqlHelper(getApplicationContext()).deleteNoteByDate(date);
-                setResult(RESULT_OK);
+                if (id != -1) {
+                    new MySqlHelper(getApplicationContext()).deleteNote(id);
+                    setResult(RESULT_OK);
+                }
                 finish();
                 break;
             }
