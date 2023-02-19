@@ -20,7 +20,7 @@ import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH> {
 
-    private final MySqlHelper db;
+    private MySqlHelper db;
 
     public TaskAdapter(MySqlHelper db){
         this.db = db;
@@ -39,34 +39,25 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH> {
         long reminder = db.getTask(position).getReminder();
         boolean isDone = db.getTask(position).getStatus();
 
-        holder.taskTitle.setText(title);
+        holder.taskTitle.setText(setStrike(title,isDone));
         holder.taskCheck.setChecked(isDone);
 
         // for check done effect
         holder.taskCheck.setOnCheckedChangeListener((compoundButton, b) -> {
             // save check state to database
-            Tasks model = db.getTask(position);
             db.updateTask(position, new Tasks(title, reminder, b));
-
-            // checked strike-through effect
-            SpannableString string = new SpannableString(title);
-            if (b) {
-                string.setSpan(new StrikethroughSpan(), 0, title.length(), 0);
-            } else {
-                string.removeSpan(new StrikethroughSpan());
-            }
-            holder.taskTitle.setText(string);
+            holder.taskTitle.setText(setStrike(title,b));
         });
     }
 
-    private static void setStrike(TextView textView, String text, boolean is) {
+    private static SpannableString setStrike(String text, boolean is) {
         SpannableString string = new SpannableString(text);
         if (is) {
             string.setSpan(new StrikethroughSpan(), 0, text.length(), 0);
         } else {
             string.removeSpan(new StrikethroughSpan());
         }
-        textView.setText(string);
+        return string;
     }
 
     @Override

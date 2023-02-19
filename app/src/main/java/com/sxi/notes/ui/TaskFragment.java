@@ -45,7 +45,8 @@ public class TaskFragment extends Fragment {
         fab.setOnClickListener(view -> {
             TaskEditorFragment editorFragment = new TaskEditorFragment();
             editorFragment.show(getChildFragmentManager(),null);
-            editorFragment.setOnSave((title, reminder, isDone) -> {
+            editorFragment.setOnSave(tasks -> {
+                db.saveTask(tasks);
                 ((RecyclerView.Adapter<?>)binding.listTask.getAdapter()).notifyDataSetChanged();
             });
         });

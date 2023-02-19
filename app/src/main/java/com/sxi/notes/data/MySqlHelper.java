@@ -89,18 +89,18 @@ public class MySqlHelper extends SQLiteOpenHelper {
         sqdb = this.getWritableDatabase();
         Cursor cursor = sqdb.rawQuery("SELECT * FROM notes", null);
         if (cursor != null && cursor.moveToPosition(id)) {
-            String condition = "title= '" + cursor.getString(0) +"' AND "+
-                    "text = '" + cursor.getString(1) +"' AND "+
-                    "date = " + cursor.getLong(2) +" AND "+
-                    "edit = " + cursor.getLong(3) +" AND "+
+            String condition = "title= '" + cursor.getString(0) + "' AND " +
+                    "text = '" + cursor.getString(1) + "' AND " +
+                    "date = " + cursor.getLong(2) + " AND " +
+                    "edit = " + cursor.getLong(3) + " AND " +
                     "theme = " + cursor.getInt(4);
             ContentValues values = new ContentValues();
-            values.put(TITLE,cursor.getString(0));
-            values.put(TEXT,cursor.getString(1));
-            values.put(DATE,cursor.getString(2));
-            values.put(EDIT,cursor.getString(3));
-            values.put(THEME,cursor.getString(4));
-            sqdb.update("notes",values,condition,null);
+            values.put(TITLE, cursor.getString(0));
+            values.put(TEXT, cursor.getString(1));
+            values.put(DATE, cursor.getString(2));
+            values.put(EDIT, cursor.getString(3));
+            values.put(THEME, cursor.getString(4));
+            sqdb.update("notes", values, condition, null);
             cursor.close();
         }
     }
@@ -109,10 +109,10 @@ public class MySqlHelper extends SQLiteOpenHelper {
         sqdb = this.getWritableDatabase();
         Cursor cursor = sqdb.rawQuery("SELECT * FROM notes", null);
         if (cursor != null && cursor.moveToPosition(id)) {
-            String condition = "title= '" + cursor.getString(0) +"' AND "+
-                    "text = '" + cursor.getString(1) +"' AND "+
-                    "date = " + cursor.getLong(2) +" AND "+
-                    "edit = " + cursor.getLong(3) +" AND "+
+            String condition = "title= '" + cursor.getString(0) + "' AND " +
+                    "text = '" + cursor.getString(1) + "' AND " +
+                    "date = " + cursor.getLong(2) + " AND " +
+                    "edit = " + cursor.getLong(3) + " AND " +
                     "theme = " + cursor.getInt(4);
             cursor.close();
             sqdb.delete("notes", condition, null);
@@ -121,8 +121,8 @@ public class MySqlHelper extends SQLiteOpenHelper {
 
     public int getNoteSize() {
         sqdb = this.getReadableDatabase();
-        Cursor cursor = sqdb.rawQuery("SELECT * FROM notes",null);
-        if (cursor!=null){
+        Cursor cursor = sqdb.rawQuery("SELECT * FROM notes", null);
+        if (cursor != null) {
             int count = cursor.getCount();
             cursor.close();
             return count;
@@ -130,19 +130,19 @@ public class MySqlHelper extends SQLiteOpenHelper {
         return 0;
     }
 
-    public void saveTask(Tasks tasks){
+    public void saveTask(Tasks tasks) {
         sqdb = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(TITLE,tasks.getTitle());
-        values.put(REMINDER,tasks.getReminder());
-        values.put(ISDONE,tasks.getStatusInt());
-        sqdb.insert("tasks",null,values);
+        values.put(TITLE, tasks.getTitle());
+        values.put(REMINDER, tasks.getReminder());
+        values.put(ISDONE, tasks.getStatusInt());
+        sqdb.insert("tasks", null, values);
     }
 
-    public Tasks getTask(int id){
+    public Tasks getTask(int id) {
         sqdb = this.getWritableDatabase();
-        Cursor cursor = sqdb.rawQuery("SELECT * FROM tasks",null);
-        if (cursor!=null&&cursor.moveToPosition(id)){
+        Cursor cursor = sqdb.rawQuery("SELECT * FROM tasks", null);
+        if (cursor != null && cursor.moveToPosition(id)) {
             Tasks tasks = new Tasks(
                     cursor.getString(0),
                     cursor.getLong(1),
@@ -154,38 +154,38 @@ public class MySqlHelper extends SQLiteOpenHelper {
         return null;
     }
 
-    public void updateTask(int id,Tasks tasks){
+    public void updateTask(int id, Tasks tasks) {
         sqdb = this.getWritableDatabase();
         Cursor cursor = sqdb.rawQuery("SELECT * FROM tasks", null);
         if (cursor != null && cursor.moveToPosition(id)) {
-            String condition = "title= '" + cursor.getString(0) +"' AND "+
-                    "reminder=" + cursor.getLong(1) +" AND "+
+            String condition = "title= '" + cursor.getString(0) + "' AND " +
+                    "reminder=" + cursor.getLong(1) + " AND " +
                     "isdone=" + cursor.getInt(2);
             ContentValues values = new ContentValues();
-            values.put(TITLE,cursor.getString(0));
-            values.put(REMINDER,cursor.getString(1));
-            values.put(ISDONE,cursor.getString(2));
-            sqdb.update("tasks",values,condition,null);
+            values.put(TITLE, tasks.getTitle());
+            values.put(REMINDER, tasks.getReminder());
+            values.put(ISDONE, tasks.getStatusInt());
+            sqdb.update("tasks", values, condition, null);
             cursor.close();
         }
     }
 
-    public void deleteTask(int id){
+    public void deleteTask(int id) {
         sqdb = this.getWritableDatabase();
         Cursor cursor = sqdb.rawQuery("SELECT * FROM tasks", null);
         if (cursor != null && cursor.moveToPosition(id)) {
-            String condition = "title= '" + cursor.getString(0) +"' AND "+
-                    "reminder=" + cursor.getLong(1) +" AND "+
+            String condition = "title= '" + cursor.getString(0) + "' AND " +
+                    "reminder=" + cursor.getLong(1) + " AND " +
                     "isdone=" + cursor.getInt(2);
             cursor.close();
             sqdb.delete("tasks", condition, null);
         }
     }
 
-    public int getTaskSize(){
+    public int getTaskSize() {
         sqdb = this.getReadableDatabase();
-        Cursor cursor = sqdb.rawQuery("SELECT * FROM tasks",null);
-        if (cursor!=null){
+        Cursor cursor = sqdb.rawQuery("SELECT * FROM tasks", null);
+        if (cursor != null) {
             int count = cursor.getCount();
             cursor.close();
             return count;

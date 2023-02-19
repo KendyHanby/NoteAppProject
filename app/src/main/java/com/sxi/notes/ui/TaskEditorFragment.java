@@ -20,6 +20,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.sxi.notes.R;
 import com.sxi.notes.data.MySqlHelper;
+import com.sxi.notes.data.model.Tasks;
 import com.sxi.notes.databinding.FragmentTaskEditorBinding;
 
 public class TaskEditorFragment extends BottomSheetDialogFragment {
@@ -45,7 +46,8 @@ public class TaskEditorFragment extends BottomSheetDialogFragment {
             String title = binding.taskTitle.getText().toString();
             long reminder = 0;
             boolean isDone = binding.taskCheck.isChecked();
-            onSave.onSave(title, reminder, isDone ? 1 : 0);
+            onSave.onSave(new Tasks(title, reminder, isDone ? 1 : 0));
+
             dismiss();
         });
 
@@ -117,6 +119,6 @@ public class TaskEditorFragment extends BottomSheetDialogFragment {
     }
 
     public interface OnSave {
-        void onSave(String title, long reminder, int isDone);
+        void onSave(Tasks tasks);
     }
 }
