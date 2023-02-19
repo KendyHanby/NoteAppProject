@@ -1,20 +1,21 @@
 package com.sxi.notes.data.model;
 
-public class TaskModel {
+public class Tasks {
+
     private String title;
     private long reminder;
     private boolean isDone;
 
-    public TaskModel() {
+    public Tasks() {
     }
 
-    public TaskModel(String title, long reminder, int isDone) {
+    public Tasks(String title, long reminder, int isDone) {
         this.title = title;
         this.reminder = reminder;
         this.isDone = isDone==1;
     }
 
-    public TaskModel(String title, long reminder, boolean isDone) {
+    public Tasks(String title, long reminder, boolean isDone) {
         this.title = title;
         this.reminder = reminder;
         this.isDone = isDone;

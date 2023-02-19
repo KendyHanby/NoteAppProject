@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
 import com.sxi.notes.data.MySqlHelper;
-import com.sxi.notes.data.model.NoteModel;
+import com.sxi.notes.data.model.Notes;
 import com.sxi.notes.databinding.ActivityNoteEditorBinding;
 
 import java.text.SimpleDateFormat;
@@ -139,7 +139,7 @@ public class NoteEditorActivity extends AppCompatActivity {
         String title = binding.editorTitle.getText().toString(),
                 text = binding.editorText.getText().toString();
 
-        NoteModel model = new NoteModel(
+        Notes notes = new Notes(
                 title,
                 text,
                 date,
@@ -149,12 +149,15 @@ public class NoteEditorActivity extends AppCompatActivity {
         if (title.equals("") && text.equals("")) {
             setResult(RESULT_CANCELED);
         } else {
-            if (isEditing){
-                db.updateNote(id,model);
-            } else {
-                db.saveNote(model);
-            }
-            setResult(RESULT_OK,new Intent());
+            db.saveNote(notes);
+            setResult(RESULT_OK, new Intent()
+                    .putExtra("id",isEditing?id:-1)
+                    .putExtra("title",title)
+                    .putExtra("text",text)
+                    .putExtra("date",date)
+                    .putExtra("edit",edit)
+                    .putExtra("theme",0)
+            );
         }
         super.onBackPressed();
     }
@@ -187,7 +190,7 @@ public class NoteEditorActivity extends AppCompatActivity {
             case "Delete": {
                 if (id != -1) {
                     new MySqlHelper(getApplicationContext()).deleteNote(id);
-                    setResult(RESULT_OK);
+                    setResult(RESULT_OK,new Intent().putExtra("id",id));
                 }
                 finish();
                 break;

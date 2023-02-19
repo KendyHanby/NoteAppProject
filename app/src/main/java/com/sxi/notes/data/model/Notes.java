@@ -1,14 +1,14 @@
 package com.sxi.notes.data.model;
 
-public class NoteModel {
+public class Notes {
     private String title, text;
     private long date,edit;
     private int theme;
 
-    public NoteModel() {
+    public Notes() {
     }
 
-    public NoteModel(String title, String text, long date,long edit, int theme) {
+    public Notes(String title, String text, long date, long edit, int theme) {
         this.title = title;
         this.text = text;
         this.date = date;

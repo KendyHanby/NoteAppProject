@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sxi.notes.R;
 import com.sxi.notes.data.MySqlHelper;
-import com.sxi.notes.data.model.TaskModel;
 
 import java.util.List;
 
@@ -22,18 +21,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH> {
 
     private final MySqlHelper db;
     private final String query;
-    private List<TaskModel> list;
 
     public TaskAdapter(MySqlHelper db){
         this.db = db;
         query = null;
-        list = null;
-    }
-
-    public TaskAdapter(MySqlHelper db,String query){
-        this.db = db;
-        this.query = query;
-        list = db.getFilterTasks(query);
     }
 
     @NonNull
@@ -45,16 +36,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH> {
     @Override
     public void onBindViewHolder(@NonNull TVH holder, int position) {
 
-        String title = query==null?db.getTask(position).getTitle():list.get(position).getTitle();
-        long reminder = query==null?db.getTask(position).getReminder():list.get(position).getReminder();
-        boolean isDone = query==null?db.getTask(position).getStatus():list.get(position).getStatus();
-
-        setStrike(holder.taskTitle, title , isDone);
-
-        holder.taskCheck.setChecked(isDone);
-
         // for check done effect
-        holder.taskCheck.setOnCheckedChangeListener((compoundButton, b) -> {
+        /*holder.taskCheck.setOnCheckedChangeListener((compoundButton, b) -> {
             // save check state to database
             TaskModel model = db.getTask(position);
             if (db.updateTask(position, new TaskModel(title, reminder, b)) == -1) {
@@ -71,7 +54,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH> {
                 string.removeSpan(new StrikethroughSpan());
             }
             holder.taskTitle.setText(string);
-        });
+        });*/
     }
 
     private static void setStrike(TextView textView, String text, boolean is) {
@@ -86,10 +69,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH> {
 
     @Override
     public int getItemCount() {
-        if (query!=null){
-            return list.size();
-        }
-        return db.getTaskSize();
+        return 0;
     }
 
     static class TVH extends RecyclerView.ViewHolder {

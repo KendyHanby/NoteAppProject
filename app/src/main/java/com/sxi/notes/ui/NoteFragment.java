@@ -1,6 +1,5 @@
 package com.sxi.notes.ui;
 
-import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
 import android.content.Intent;
@@ -9,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -27,9 +25,6 @@ import com.sxi.notes.NoteEditorActivity;
 import com.sxi.notes.R;
 import com.sxi.notes.adapter.NoteAdapter;
 import com.sxi.notes.databinding.FragmentNoteBinding;
-import com.sxi.notes.data.model.NoteModel;
-
-import java.util.Objects;
 
 public class NoteFragment extends Fragment {
 
@@ -39,12 +34,14 @@ public class NoteFragment extends Fragment {
     private SearchView searchView;
 
     private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode()==RESULT_OK){
-            if (result.getData().getIntExtra("is",-1)!=-1){
+        if (result.getResultCode() == RESULT_OK) {
+            int id = result.getData().getIntExtra("id", -1);
+            Bundle bundle = result.getData().getExtras();
+            if (id != -1) {
                 Log.i("ddd", ":it work ");
-                ((RecyclerView.Adapter<?>) binding.listNote.getAdapter()).notifyItemChanged(result.getData().getExtras().getInt("id"));
+            } else {
+                ((RecyclerView.Adapter<?>)binding.listNote.getAdapter()).notifyDataSetChanged();
             }
-            ((RecyclerView.Adapter<?>) binding.listNote.getAdapter()).notifyDataSetChanged();
         }
     });
 
@@ -71,7 +68,7 @@ public class NoteFragment extends Fragment {
         fab = requireActivity().findViewById(R.id.main_fab);
         fab.setOnClickListener(view -> {
             launcher.launch(new Intent(requireContext(), NoteEditorActivity.class)
-                    .putExtra("id",-1)
+                    .putExtra("id", -1)
             );
         });
         searchView = requireActivity().findViewById(R.id.main_search);
@@ -90,10 +87,10 @@ public class NoteFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (newText.equals("")){
-                    binding.listNote.setAdapter(new NoteAdapter(db,launcher));
+                if (newText.equals("")) {
+
                 } else {
-                    binding.listNote.setAdapter(new NoteAdapter(db,newText,launcher));
+
                 }
                 return true;
             }

@@ -5,9 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
-import com.sxi.notes.data.model.NoteModel;
-import com.sxi.notes.data.model.TaskModel;
+import com.sxi.notes.data.model.Notes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +20,6 @@ public class MySqlHelper extends SQLiteOpenHelper {
 
     private static final int DB_VERSION = 1;
 
-    // Notes contents
-    private static final String NOTE_TB = "notes";
-    private static final String ID = "id";
     private static final String TEXT = "text";
     private static final String TITLE = "title";
     private static final String FOLDER = "text";
@@ -44,8 +41,8 @@ public class MySqlHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String noteQuery = "CREATE TABLE notes(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, text TEXT,date LONG,edit LONG, theme INTEGER);";
-        String taskQuery = "CREATE TABLE tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, reminder LONG, isdone INTEGER);";
+        String noteQuery = "CREATE TABLE notes( title TEXT, text TEXT,date LONG,edit LONG, theme INTEGER);";
+        String taskQuery = "CREATE TABLE tasks( title TEXT, reminder LONG, isdone INTEGER);";
         sqLiteDatabase.execSQL(noteQuery);
         sqLiteDatabase.execSQL(taskQuery);
     }
@@ -57,89 +54,74 @@ public class MySqlHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    // This is the start of note section
+    // Professional mode
 
-    /**
-     * Save new note to database
-     */
-    public long saveNote(NoteModel model) {
+    public void saveNote(Notes notes) {
         sqdb = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(TITLE, model.getTitle());
-        values.put(TEXT, model.getText());
-        values.put(DATE, model.getDate());
-        values.put(EDIT, model.getEdit());
-        values.put(THEME, model.getTheme());
-        return sqdb.insert("notes", null, values);
+        values.put(TITLE, notes.getTitle());
+        values.put(TEXT, notes.getText());
+        values.put(DATE, notes.getDate());
+        values.put(EDIT, notes.getEdit());
+        values.put(THEME, notes.getTheme());
+        sqdb.insert("notes", null, values);
     }
 
-    /**
-     * Edit notes in database
-     */
-    public long updateNote(long id, NoteModel model) {
-        sqdb = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(TITLE, model.getTitle());
-        values.put(TEXT, model.getText());
-        values.put(DATE, model.getDate());
-        values.put(EDIT,model.getEdit());
-        values.put(THEME, model.getTheme());
-        return sqdb.update("notes", values, "id=" + (id+1), null);
-    }
-
-    /**
-     * Delete note from database
-     */
-    public void deleteNote(long id) {
-        sqdb = this.getWritableDatabase();
-        sqdb.delete("notes", "id=" + (id+1), null);
-    }
-
-    public void deleteNoteByDate(long date){
-        sqdb = this.getWritableDatabase();
-        sqdb.delete(NOTE_TB,DATE+"="+date,null);
-    }
-
-    public List<NoteModel> getFilterNotes(String query){
+    public Notes getNote(int id) {
         sqdb = this.getReadableDatabase();
-        List<NoteModel> list = new ArrayList<>();
-        Cursor cursor = sqdb.rawQuery("SELECT * FROM notes WHERE LOWER(text) LIKE '%"+query+"%' OR LOWER(title) LIKE '%"+query+"%'",null);
-        while (cursor!=null&&cursor.moveToNext()){
-            NoteModel model = new NoteModel(
+        Cursor cursor = sqdb.rawQuery("SELECT * FROM notes", null);
+        Notes notes = new Notes();
+        if (cursor != null && cursor.moveToPosition(id)) {
+            notes = new Notes(
+                    cursor.getString(0),
                     cursor.getString(1),
-                    cursor.getString(2),
+                    cursor.getLong(2),
                     cursor.getLong(3),
-                    cursor.getLong(4),
-                    cursor.getInt(5)
+                    cursor.getInt(4)
             );
-            list.add(model);
-        }
-        assert cursor != null;
-        cursor.close();
-        return list;
-    }
-
-    /**
-     * Get Note from database
-     */
-    public NoteModel getNote(long id) {
-        sqdb = this.getReadableDatabase();
-        Cursor cursor = sqdb.rawQuery("SELECT * FROM notes WHERE id=" + (id+1), null);
-        NoteModel noteModel = new NoteModel();
-        if (cursor != null && cursor.moveToNext()) {
-            noteModel = new NoteModel(cursor.getString(1), cursor.getString(2), cursor.getLong(3), cursor.getLong(4),cursor.getInt(5));
             cursor.close();
         }
-        return noteModel;
+        return notes;
     }
 
-    /**
-     * Get Note size in database
-     */
+    public void updateNote(int id, Notes notes) {
+        sqdb = this.getWritableDatabase();
+        Cursor cursor = sqdb.rawQuery("SELECT * FROM notes", null);
+        if (cursor != null && cursor.moveToPosition(id)) {
+            String condition = "title=" + cursor.getString(0) +
+                    "text=" + cursor.getString(1) +
+                    "date=" + cursor.getLong(2) +
+                    "edit=" + cursor.getLong(3) +
+                    "theme=" + cursor.getInt(4);
+            ContentValues values = new ContentValues();
+            values.put(TITLE,cursor.getString(0));
+            values.put(TEXT,cursor.getString(1));
+            values.put(DATE,cursor.getString(2));
+            values.put(EDIT,cursor.getString(3));
+            values.put(THEME,cursor.getString(4));
+            sqdb.update("notes",values,condition,null);
+            cursor.close();
+        }
+    }
+
+    public void deleteNote(int id) {
+        sqdb = this.getWritableDatabase();
+        Cursor cursor = sqdb.rawQuery("SELECT * FROM notes", null);
+        if (cursor != null && cursor.moveToPosition(id)) {
+            String condition = "title=" + cursor.getString(0) +
+                    "text=" + cursor.getString(1) +
+                    "date=" + cursor.getLong(2) +
+                    "edit=" + cursor.getLong(3) +
+                    "theme=" + cursor.getInt(4);
+            cursor.close();
+            sqdb.delete("notes", condition, null);
+        }
+    }
+
     public int getNoteSize() {
         sqdb = this.getReadableDatabase();
-        Cursor cursor = sqdb.rawQuery("SELECT id FROM notes", null);
-        if (cursor != null) {
+        Cursor cursor = sqdb.rawQuery("SELECT * FROM notes",null);
+        if (cursor!=null){
             int count = cursor.getCount();
             cursor.close();
             return count;
@@ -147,83 +129,5 @@ public class MySqlHelper extends SQLiteOpenHelper {
         return 0;
     }
 
-    // This is the end of note section
 
-    // This is the start of task section
-
-    /**
-     * Save task to database
-     */
-    public long saveTask(TaskModel taskModel) {
-        sqdb = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(TITLE, taskModel.getTitle());
-        values.put(REMINDER, taskModel.getReminder());
-        values.put(ISDONE, taskModel.getStatusInt());
-        return sqdb.insert(TASK_TB, null, values);
-    }
-
-    public TaskModel getTask(long id) {
-
-        // TODO : unfinished
-
-        sqdb = this.getReadableDatabase();
-        Cursor cursor = sqdb.rawQuery("SELECT * FROM tasks WHERE id=" + (id+1), null);
-        if (cursor != null && cursor.moveToNext()) {
-            TaskModel taskModel = new TaskModel(
-                    cursor.getString(1),
-                    cursor.getLong(2),
-                    cursor.getInt(3)
-            );
-            cursor.close();
-            return taskModel;
-        }
-        return null;
-    }
-
-    public long updateTask(long id, TaskModel taskModel) {
-        sqdb = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(TITLE, taskModel.getTitle());
-        values.put(REMINDER, taskModel.getReminder());
-        values.put(ISDONE, taskModel.getStatus());
-        return sqdb.update(TASK_TB, values, "id=" + (id+1), null);
-    }
-
-    public void deleteTask(long id) {
-        sqdb = this.getWritableDatabase();
-        sqdb.delete(TASK_TB, ID + "=" + (id+1), null);
-    }
-
-    public void deleteTaskByTitle(String title){
-        sqdb = this.getWritableDatabase();
-        sqdb.delete(TASK_TB,TITLE+"="+title,null);
-    }
-
-    public List<TaskModel> getFilterTasks(String query){
-        sqdb = this.getReadableDatabase();
-        List<TaskModel> models = new ArrayList<>();
-        Cursor cursor = sqdb.rawQuery("",null);
-        while (cursor!=null && cursor.moveToNext()){
-            TaskModel taskModel = new TaskModel(
-                    cursor.getString(1),
-                    cursor.getLong(2),
-                    cursor.getInt(3)
-            );
-            models.add(taskModel);
-        }
-        assert cursor != null;
-        cursor.close();
-        return models;
-    }
-    public int getTaskSize() {
-        sqdb = this.getReadableDatabase();
-        Cursor cursor = sqdb.rawQuery("SELECT id FROM tasks", null);
-        if (cursor != null) {
-            int count = cursor.getCount();
-            cursor.close();
-            return count;
-        }
-        return 0;
-    }
 }

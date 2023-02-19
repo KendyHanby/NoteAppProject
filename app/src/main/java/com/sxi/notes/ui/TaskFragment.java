@@ -16,7 +16,6 @@ import com.sxi.notes.R;
 import com.sxi.notes.adapter.TaskAdapter;
 import com.sxi.notes.data.MySqlHelper;
 import com.sxi.notes.databinding.FragmentTaskBinding;
-import com.sxi.notes.data.model.TaskModel;
 
 public class TaskFragment extends Fragment {
 
@@ -47,9 +46,6 @@ public class TaskFragment extends Fragment {
             TaskEditorFragment editorFragment = new TaskEditorFragment();
             editorFragment.show(getChildFragmentManager(),null);
             editorFragment.setOnSave((title, reminder, isDone) -> {
-                if (db.saveTask(new TaskModel(title,reminder,isDone))==-1) {
-                    Toast.makeText(requireContext(), "Can't Save Task", Toast.LENGTH_SHORT).show();
-                }
                 ((RecyclerView.Adapter<?>)binding.listTask.getAdapter()).notifyDataSetChanged();
             });
         });
@@ -66,7 +62,7 @@ public class TaskFragment extends Fragment {
                 if (newText.equals("")){
                     binding.listTask.setAdapter(new TaskAdapter(db));
                 } else {
-                    binding.listTask.setAdapter(new TaskAdapter(db,newText));
+
                 }
                 return true;
             }
