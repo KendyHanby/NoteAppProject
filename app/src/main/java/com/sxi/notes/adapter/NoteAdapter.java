@@ -47,11 +47,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
         holder.itemView.setOnClickListener(v -> {
             launcher.launch(new Intent(v.getContext(), NoteEditorActivity.class)
                     .putExtra("id", position)
-                    .putExtra("title", title)
-                    .putExtra("text", text)
-                    .putExtra("date", date)
-                    .putExtra("edit", edit)
-                    .putExtra("theme", theme)
             );
             notifyItemChanged(position);
         });

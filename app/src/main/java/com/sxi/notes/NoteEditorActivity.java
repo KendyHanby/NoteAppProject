@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -137,11 +138,13 @@ public class NoteEditorActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         String title = binding.editorTitle.getText().toString(),
-                text = binding.editorText.getText().toString();
+                text = binding.editorText.getText().toString(),
+                        folder = "example";
 
         Notes notes = new Notes(
                 title,
                 text,
+                folder,
                 date,
                 isEditing?Calendar.getInstance().getTimeInMillis():date,
                 0
@@ -149,18 +152,13 @@ public class NoteEditorActivity extends AppCompatActivity {
         if (title.equals("") && text.equals("")) {
             setResult(RESULT_CANCELED);
         } else {
-            if (id!=-1){
+            if (isEditing){
                 db.updateNote(id,notes);
             } else {
                 db.saveNote(notes);
             }
             setResult(RESULT_OK, new Intent()
                     .putExtra("id",isEditing?id:-1)
-                    .putExtra("title",title)
-                    .putExtra("text",text)
-                    .putExtra("date",date)
-                    .putExtra("edit",edit)
-                    .putExtra("theme",0)
             );
         }
         super.onBackPressed();
