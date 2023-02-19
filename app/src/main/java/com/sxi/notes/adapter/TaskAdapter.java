@@ -42,6 +42,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH> {
         holder.taskTitle.setText(setStrike(title,isDone));
         holder.taskCheck.setChecked(isDone);
 
+        // TODO delete task
+
         // for check done effect
         holder.taskCheck.setOnCheckedChangeListener((compoundButton, b) -> {
             // save check state to database
