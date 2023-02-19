@@ -90,6 +90,7 @@ public class NoteFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                // TODO search notes
                 if (newText.equals("")) {
 
                 } else {
