@@ -1,8 +1,7 @@
 package com.sxi.notes.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
+import com.sxi.notes.FolderActivity;
 import com.sxi.notes.NoteEditorActivity;
 import com.sxi.notes.R;
 import com.sxi.notes.data.MySqlHelper;
@@ -22,8 +22,8 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
-    private ActivityResultLauncher<Intent> launcher;
-    private MySqlHelper db;
+    private final ActivityResultLauncher<Intent> launcher;
+    private final MySqlHelper db;
 
     public NoteAdapter( MySqlHelper db, ActivityResultLauncher<Intent> launcher){
         this.db = db;
@@ -36,6 +36,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
         return new NoteVH(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_note_item, parent, false));
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(@NonNull NoteVH holder, int position) {
         String title = db.getNote(position).getTitle(),
@@ -56,7 +57,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
         });
         holder.itemView.setOnLongClickListener(view -> {
             BottomSheetDialog dialog = new BottomSheetDialog(holder.itemView.getContext());
-            View root = LayoutInflater.from(dialog.getContext()).inflate(R.layout.item_options_layout, null);
+            @SuppressLint("InflateParams") View root = LayoutInflater.from(dialog.getContext()).inflate(R.layout.item_options_layout, null);
             MaterialButton delete = root.findViewById(R.id.item_del);
             MaterialButton move = root.findViewById(R.id.item_mov);
             delete.setOnClickListener(v -> {
@@ -65,7 +66,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
                 dialog.dismiss();
             });
             move.setOnClickListener(v -> {
-
+                dialog.getContext().startActivity(new Intent(dialog.getContext(), FolderActivity.class));
                 dialog.dismiss();
             });
             dialog.setContentView(root);

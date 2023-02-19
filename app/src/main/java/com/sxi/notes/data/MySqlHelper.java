@@ -5,13 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.sxi.notes.data.model.Notes;
 import com.sxi.notes.data.model.Tasks;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MySqlHelper extends SQLiteOpenHelper {
     private SQLiteDatabase sqdb;
@@ -32,7 +28,6 @@ public class MySqlHelper extends SQLiteOpenHelper {
     private static final String TASK_TB = "tasks";
     private static final String REMINDER = "reminder";
     private static final String ISDONE = "isdone";
-    private static final String SUBTASK = "subtask";
 
 
     public MySqlHelper(Context context) {
@@ -42,7 +37,7 @@ public class MySqlHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String noteQuery = "CREATE TABLE notes( title TEXT, text TEXT,date LONG,edit LONG, theme INTEGER);";
+        String noteQuery = "CREATE TABLE notes( title TEXT, text TEXT,folder TEXT,date LONG,edit LONG, theme INTEGER);";
         String taskQuery = "CREATE TABLE tasks( title TEXT, reminder LONG, isdone INTEGER);";
         sqLiteDatabase.execSQL(noteQuery);
         sqLiteDatabase.execSQL(taskQuery);
