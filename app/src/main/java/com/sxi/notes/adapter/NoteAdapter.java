@@ -60,7 +60,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
             MaterialButton delete = root.findViewById(R.id.item_del);
             MaterialButton move = root.findViewById(R.id.item_mov);
             delete.setOnClickListener(v -> {
-
+                db.deleteNote(position);
                 notifyDataSetChanged();
                 dialog.dismiss();
             });

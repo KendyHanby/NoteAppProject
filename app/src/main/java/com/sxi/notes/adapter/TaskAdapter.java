@@ -14,17 +14,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sxi.notes.R;
 import com.sxi.notes.data.MySqlHelper;
+import com.sxi.notes.data.model.Tasks;
 
 import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH> {
 
     private final MySqlHelper db;
-    private final String query;
 
     public TaskAdapter(MySqlHelper db){
         this.db = db;
-        query = null;
     }
 
     @NonNull
@@ -36,15 +35,18 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH> {
     @Override
     public void onBindViewHolder(@NonNull TVH holder, int position) {
 
+        String title = db.getTask(position).getTitle();
+        long reminder = db.getTask(position).getReminder();
+        boolean isDone = db.getTask(position).getStatus();
+
+        holder.taskTitle.setText(title);
+        holder.taskCheck.setChecked(isDone);
+
         // for check done effect
-        /*holder.taskCheck.setOnCheckedChangeListener((compoundButton, b) -> {
+        holder.taskCheck.setOnCheckedChangeListener((compoundButton, b) -> {
             // save check state to database
-            TaskModel model = db.getTask(position);
-            if (db.updateTask(position, new TaskModel(title, reminder, b)) == -1) {
-                Toast.makeText(holder.itemView.getContext(), "Have a problem!", Toast.LENGTH_SHORT).show();
-            } else if (query!=null){
-                list.set(position,new TaskModel(title,reminder,b));
-            }
+            Tasks model = db.getTask(position);
+            db.updateTask(position, new Tasks(title, reminder, b));
 
             // checked strike-through effect
             SpannableString string = new SpannableString(title);
@@ -54,7 +56,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH> {
                 string.removeSpan(new StrikethroughSpan());
             }
             holder.taskTitle.setText(string);
-        });*/
+        });
     }
 
     private static void setStrike(TextView textView, String text, boolean is) {
@@ -69,7 +71,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TVH> {
 
     @Override
     public int getItemCount() {
-        return 0;
+        return db.getTaskSize();
     }
 
     static class TVH extends RecyclerView.ViewHolder {
