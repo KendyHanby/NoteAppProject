@@ -90,11 +90,11 @@ public class MySqlHelper extends SQLiteOpenHelper {
                     "edit = " + cursor.getLong(3) + " AND " +
                     "theme = " + cursor.getInt(4);
             ContentValues values = new ContentValues();
-            values.put(TITLE, cursor.getString(0));
-            values.put(TEXT, cursor.getString(1));
-            values.put(DATE, cursor.getString(2));
-            values.put(EDIT, cursor.getString(3));
-            values.put(THEME, cursor.getString(4));
+            values.put(TITLE, notes.getTitle());
+            values.put(TEXT, notes.getText());
+            values.put(DATE, notes.getDate());
+            values.put(EDIT, notes.getEdit());
+            values.put(THEME, notes.getTheme());
             sqdb.update("notes", values, condition, null);
             cursor.close();
         }

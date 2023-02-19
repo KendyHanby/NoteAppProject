@@ -37,10 +37,13 @@ public class NoteFragment extends Fragment {
         if (result.getResultCode() == RESULT_OK) {
             int id = result.getData().getIntExtra("id", -1);
             Bundle bundle = result.getData().getExtras();
-            if (id != -1) {
-                Log.i("ddd", ":it work ");
-            } else {
+            if (id == -1) {
                 ((RecyclerView.Adapter<?>)binding.listNote.getAdapter()).notifyDataSetChanged();
+            } else if (id == -2) {
+                db.deleteNote(id);
+                ((RecyclerView.Adapter<?>)binding.listNote.getAdapter()).notifyItemChanged(id);
+            } else {
+                ((RecyclerView.Adapter<?>)binding.listNote.getAdapter()).notifyItemChanged(id);
             }
         }
     });

@@ -149,7 +149,11 @@ public class NoteEditorActivity extends AppCompatActivity {
         if (title.equals("") && text.equals("")) {
             setResult(RESULT_CANCELED);
         } else {
-            db.saveNote(notes);
+            if (id!=-1){
+                db.updateNote(id,notes);
+            } else {
+                db.saveNote(notes);
+            }
             setResult(RESULT_OK, new Intent()
                     .putExtra("id",isEditing?id:-1)
                     .putExtra("title",title)
@@ -189,8 +193,7 @@ public class NoteEditorActivity extends AppCompatActivity {
             }
             case "Delete": {
                 if (id != -1) {
-                    new MySqlHelper(getApplicationContext()).deleteNote(id);
-                    setResult(RESULT_OK,new Intent().putExtra("id",id));
+                    setResult(RESULT_OK,new Intent().putExtra("id",-2));
                 }
                 finish();
                 break;
