@@ -6,8 +6,11 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -19,6 +22,7 @@ import androidx.preference.PreferenceManager;
 import com.sxi.notes.data.MySqlHelper;
 import com.sxi.notes.data.model.Notes;
 import com.sxi.notes.databinding.ActivityNoteEditorBinding;
+import com.sxi.notes.editor.MySelectionActionModeCallback;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -71,14 +75,16 @@ public class NoteEditorActivity extends AppCompatActivity {
             binding.date.setText(dateInText.concat(" | 0 Character"));
         }
         binding.editorText.addTextChangedListener(new TextWatcher() {
+            private int start;
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                int length = charSequence.toString().trim()
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                this.start = start;
+                int length = s.toString().trim()
                         .replace(" ", "")
                         .replace("\n", "").length();
                 if (length < 2) {
@@ -89,10 +95,13 @@ public class NoteEditorActivity extends AppCompatActivity {
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
+            public void afterTextChanged(Editable s) {
+                s.setSpan(new UnderlineSpan(),start,s.length(),0);
 
             }
         });
+
+        binding.editorText.setCustomSelectionActionModeCallback(new MySelectionActionModeCallback(this));
 
         //Font Size From Setting
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
