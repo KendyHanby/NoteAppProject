@@ -26,6 +26,6 @@ public class MyStyle {
         }
     }
     public static class Underline{
-        private
+
     }
 }
