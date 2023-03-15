@@ -6,11 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.SpannableString;
 import android.text.TextWatcher;
-import android.text.style.UnderlineSpan;
-import android.util.Log;
-import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -22,7 +18,6 @@ import androidx.preference.PreferenceManager;
 import com.sxi.notes.data.MySqlHelper;
 import com.sxi.notes.data.model.Notes;
 import com.sxi.notes.databinding.ActivityNoteEditorBinding;
-import com.sxi.notes.editor.MySelectionActionModeCallback;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -55,14 +50,13 @@ public class NoteEditorActivity extends AppCompatActivity {
             onBackPressed();
         });
 
-
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("MMMM dd h:mm", Locale.US);
 
-        isEditing = getIntent().getIntExtra("id", -1)!=-1;
+        isEditing = getIntent().getIntExtra("id", -1) != -1;
 
         if (isEditing) {
-            id = getIntent().getIntExtra("id",-1);
+            id = getIntent().getIntExtra("id", -1);
             binding.editorTitle.setText(db.getNote(id).getTitle());
             binding.editorText.setText(db.getNote(id).getText());
             date = db.getNote(id).getDate();
@@ -76,6 +70,7 @@ public class NoteEditorActivity extends AppCompatActivity {
         }
         binding.editorText.addTextChangedListener(new TextWatcher() {
             private int start;
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -96,12 +91,13 @@ public class NoteEditorActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                s.setSpan(new UnderlineSpan(),start,s.length(),0);
-
+//                s.setSpan(new UnderlineSpan(), start, s.length(), 0);
             }
         });
 
-        binding.editorText.setCustomSelectionActionModeCallback(new MySelectionActionModeCallback(this));
+        binding.editorText.setOnClickListener(v -> {
+
+        });
 
         //Font Size From Setting
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -148,26 +144,26 @@ public class NoteEditorActivity extends AppCompatActivity {
     public void onBackPressed() {
         String title = binding.editorTitle.getText().toString(),
                 text = binding.editorText.getText().toString(),
-                        folder = "example";
+                folder = "example";
 
         Notes notes = new Notes(
                 title,
                 text,
                 folder,
                 date,
-                isEditing?Calendar.getInstance().getTimeInMillis():date,
+                isEditing ? Calendar.getInstance().getTimeInMillis() : date,
                 0
         );
         if (title.equals("") && text.equals("")) {
             setResult(RESULT_CANCELED);
         } else {
-            if (isEditing){
-                db.updateNote(id,notes);
+            if (isEditing) {
+                db.updateNote(id, notes);
             } else {
                 db.saveNote(notes);
             }
             setResult(RESULT_OK, new Intent()
-                    .putExtra("id",isEditing?id:-1)
+                    .putExtra("id", isEditing ? id : -1)
             );
         }
         super.onBackPressed();
@@ -182,16 +178,16 @@ public class NoteEditorActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getTitle().toString()) {
-            case "Reminder":{
+            case "Reminder": {
                 // TODO reminder
                 break;
             }
-            case "Theme":{
+            case "Theme": {
                 // TODO theme
                 break;
             }
-            case "Share":{
-                startActivity(Intent.createChooser(new Intent().setAction(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT,binding.editorText.getText().toString()),"Share to..."));
+            case "Share": {
+                startActivity(Intent.createChooser(new Intent().setAction(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, binding.editorText.getText().toString()), "Share to..."));
                 break;
             }
             case "Move to": {
@@ -200,7 +196,7 @@ public class NoteEditorActivity extends AppCompatActivity {
             }
             case "Delete": {
                 if (id != -1) {
-                    setResult(RESULT_OK,new Intent().putExtra("id",-2));
+                    setResult(RESULT_OK, new Intent().putExtra("id", -2));
                 }
                 finish();
                 break;

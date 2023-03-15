@@ -71,12 +71,13 @@
                     android:hint="Title"
                     android:padding="8dp" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <EditText
                     android:id="@+id/editor_text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"
                     android:gravity="start"
+                    android:textIsSelectable="true"
                     android:hint="Start typing"
                     android:padding="8dp" />
 
