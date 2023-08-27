@@ -51,6 +51,8 @@ class MainActivity : AppCompatActivity() {
         binding.appBarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             if (verticalOffset == 0 && binding.mainFab.isShown.not()) {
                 binding.mainFab.show()
+            } else if (verticalOffset == -128) {
+                binding.mainFab.hide()
             }
         }
 
@@ -67,10 +69,6 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         })
-
-        binding.mainFab.setOnClickListener {
-            Database(this).insert(NoteModel(null, "Test 1", "contenndkvk", 123.4))
-        }
 
         //test todo :testk
         Database(this)
