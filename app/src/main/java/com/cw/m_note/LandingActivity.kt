@@ -11,8 +11,8 @@ class LandingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_landing)
 
         Handler(mainLooper).postDelayed({
-            startActivity(Intent(this,MainActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
-        },3000)
+        }, 0/*3000*/)
     }
 }
