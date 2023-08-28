@@ -48,11 +48,9 @@ class MainActivity : AppCompatActivity() {
         })
 
         // setup FAB with app bar layout
-        binding.appBarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+        binding.appBarLayout.addOnOffsetChangedListener { _, verticalOffset ->
             if (verticalOffset == 0 && binding.mainFab.isShown.not()) {
                 binding.mainFab.show()
-            } else if (verticalOffset == -128) {
-                binding.mainFab.hide()
             }
         }
 
@@ -69,9 +67,6 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         })
-
-        //test todo :testk
-        Database(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

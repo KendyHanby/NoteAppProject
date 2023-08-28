@@ -4,10 +4,11 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.widget.Toast
 
 data class NoteModel(var id: Int?, var title: String, var content: String, var date: Double)
 data class TaskModel(var id: Int, var title: String, var status: Boolean, var date: Double)
-class Database(context: Context) : SQLiteOpenHelper(
+class Database(private val context: Context) : SQLiteOpenHelper(
     context,
     "database.db",
     null,
@@ -41,10 +42,25 @@ class Database(context: Context) : SQLiteOpenHelper(
         db.insert("task", null, value)
     }
 
-    fun getNote(position: Int): NoteModel {
+    fun editNote(noteModel: NoteModel) {
+        db = this.writableDatabase
+        val value = ContentValues()
+        value.put("title", noteModel.title)
+        value.put("content", noteModel.content)
+        db.update("note", value, "id=${noteModel.id}", null)
+    }
+
+    fun getNote(position: Int, id: Int = -1): NoteModel {
         db = this.readableDatabase
-        val c = db.rawQuery("SELECT * FROM note;", null)
-        c.moveToPosition(position)
+        val c = db.rawQuery(
+            if (position == -1) "SELECT * FROM note WHERE id=$id;" else "SELECT * FROM note;",
+            null
+        )
+        if (position != -1) {
+            c.moveToPosition(position)
+        } else {
+            c.moveToNext()
+        }
         val noteModel = NoteModel(
             c.getInt(0),
             c.getString(1),
@@ -61,6 +77,11 @@ class Database(context: Context) : SQLiteOpenHelper(
         val size = c.count
         c.close()
         return size
+    }
+
+    fun delete(noteModel: NoteModel) {
+        db = this.writableDatabase
+        db.delete("note", "id=?", arrayOf("${noteModel.id}"))
     }
 
 }

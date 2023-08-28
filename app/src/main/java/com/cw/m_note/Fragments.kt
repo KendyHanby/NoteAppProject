@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +16,16 @@ class NotesFragment : Fragment() {
 
     private lateinit var notesList: RecyclerView
     private lateinit var fab: FloatingActionButton
+    private val launcher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode != -1) {
+                Toast.makeText(requireContext(), "${it.resultCode}", Toast.LENGTH_SHORT).show()
+                with(notesList.adapter) {
+                    this?.notifyItemChanged(it.resultCode)
+                }
+            }
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -24,11 +36,14 @@ class NotesFragment : Fragment() {
         notesList = v.findViewById(R.id.notes_list)
         notesList.setHasFixedSize(true)
         notesList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        notesList.adapter = NotesAdapter()
+        notesList.adapter = NotesAdapter(launcher)
         notesList.addOnScrollListener(object : OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                log("dx $dx dy $dy")
+                if (dy > 0) {
+                    fab.hide()
+                } else {
+                    fab.show()
+                }
             }
         })
 

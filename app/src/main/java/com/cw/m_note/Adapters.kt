@@ -1,9 +1,12 @@
 package com.cw.m_note
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -22,12 +25,14 @@ class PageAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fra
 
 }
 
-class NotesAdapter : RecyclerView.Adapter<NotesAdapter.NotesVH>() {
+class NotesAdapter(private val launcher: ActivityResultLauncher<Intent>) :
+    RecyclerView.Adapter<NotesAdapter.NotesVH>() {
 
     private lateinit var database: Database
 
     class NotesVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val title: TextView = itemView.findViewById(R.id.title)
+        val title: TextView = itemView.findViewById(R.id.note_item_title)
+        val content: TextView = itemView.findViewById(R.id.note_item_content)
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -46,7 +51,22 @@ class NotesAdapter : RecyclerView.Adapter<NotesAdapter.NotesVH>() {
     }
 
     override fun onBindViewHolder(holder: NotesVH, position: Int) {
-        holder.title.text = database.getNote(position).title
+        val noteModel = database.getNote(position)
+        holder.title.text = noteModel.title
+        holder.content.text = noteModel.content
+        holder.itemView.setOnClickListener {
+            launcher.launch(
+                Intent(
+                    holder.itemView.context,
+                    NoteEditorActivity::class.java
+                )
+                    .putExtra("id", noteModel.id)
+                    .putExtra("position", position)
+            )
+            /*data.remove(noteModel)
+            this.notifyItemRemoved(position)
+            this.notifyItemRangeChanged(position, data.size)*/
+        }
     }
 }
 
