@@ -1,6 +1,7 @@
 package com.cw.m_note
 
 import android.content.Intent
+import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,7 @@ class NotesAdapter(private val launcher: ActivityResultLauncher<Intent>) :
     class NotesVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.note_item_title)
         val content: TextView = itemView.findViewById(R.id.note_item_content)
+        val date: TextView = itemView.findViewById(R.id.note_item_date)
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -54,14 +56,18 @@ class NotesAdapter(private val launcher: ActivityResultLauncher<Intent>) :
         val noteModel = database.getNote(position)
         holder.title.text = noteModel.title
         holder.content.text = noteModel.content
+        holder.date.text = DateFormat.format(
+            holder.itemView.context.getString(R.string.note_date_format),
+            noteModel.date
+        )
         holder.itemView.setOnClickListener {
             launcher.launch(
                 Intent(
                     holder.itemView.context,
                     NoteEditorActivity::class.java
                 )
+                    .putExtra("mode", Database.EDIT)
                     .putExtra("id", noteModel.id)
-                    .putExtra("position", position)
             )
             /*data.remove(noteModel)
             this.notifyItemRemoved(position)

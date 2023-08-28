@@ -23,6 +23,9 @@
         android:id="@+id/note_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:hint="Title"
+        android:layout_margin="8dp"
         android:imeOptions="actionNext"
         android:inputType="text"
         app:layout_constraintTop_toBottomOf="@id/app_bar_layout" />
@@ -31,7 +34,10 @@
         android:id="@+id/note_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@android:color/transparent"
         android:gravity="start"
+        android:hint="Notes"
+        android:layout_margin="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/note_title" />
 </androidx.constraintlayout.widget.ConstraintLayout>

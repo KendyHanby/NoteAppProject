@@ -6,24 +6,36 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.widget.Toast
 
-data class NoteModel(var id: Int?, var title: String, var content: String, var date: Double)
-data class TaskModel(var id: Int, var title: String, var status: Boolean, var date: Double)
+
+data class NoteModel(var id: Int?, var title: String, var content: String, var date: Long)
+data class TaskModel(var id: Int, var title: String, var status: Boolean, var date: Long)
 class Database(private val context: Context) : SQLiteOpenHelper(
     context,
     "database.db",
     null,
     1
 ) {
+    companion object {
+        const val ADD = -1
+        const val EDIT = -2
+        const val DELETE = -3
+        const val CANCEL = -4
+    }
+
     private lateinit var db: SQLiteDatabase
     override fun onCreate(db: SQLiteDatabase?) {
-        db?.execSQL("CREATE TABLE IF NOT EXISTS note (id INTEGER PRIMARY KEY AUTOINCREMENT,title TEXT, content BLOB, date REAL);")
+        db?.execSQL("CREATE TABLE IF NOT EXISTS note (id INTEGER PRIMARY KEY AUTOINCREMENT,title TEXT, content BLOB, date INTEGER);")
         db?.execSQL("CREATE TABLE IF NOT EXISTS task (id INTEGER PRIMARY KEY AUTOINCREMENT,title TEXT, status INTEGER);")
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        db?.execSQL("")
+
     }
 
+    /**
+     * Add note into database with note model
+     * @param noteModel Note model to add
+     * */
     fun insert(noteModel: NoteModel) {
         db = this.writableDatabase
         val value = ContentValues()
@@ -47,6 +59,7 @@ class Database(private val context: Context) : SQLiteOpenHelper(
         val value = ContentValues()
         value.put("title", noteModel.title)
         value.put("content", noteModel.content)
+        value.put("date", noteModel.date)
         db.update("note", value, "id=${noteModel.id}", null)
     }
 
@@ -65,7 +78,7 @@ class Database(private val context: Context) : SQLiteOpenHelper(
             c.getInt(0),
             c.getString(1),
             c.getString(2),
-            c.getDouble(3)
+            c.getLong(3)
         )
         c.close()
         return noteModel
@@ -81,7 +94,7 @@ class Database(private val context: Context) : SQLiteOpenHelper(
 
     fun delete(noteModel: NoteModel) {
         db = this.writableDatabase
-        db.delete("note", "id=?", arrayOf("${noteModel.id}"))
+        db.delete("note", "id=${noteModel.id}", null)
     }
 
 }
