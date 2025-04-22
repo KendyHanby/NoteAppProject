@@ -16,6 +16,7 @@
             android:name=".NoteEditorActivity"
             android:exported="false" />
         <activity
+            android:label="Sora Editor"
             android:name=".TerActivity"
             android:exported="true">
             <intent-filter>

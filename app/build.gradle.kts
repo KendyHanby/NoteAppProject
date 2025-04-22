@@ -40,6 +40,10 @@ android {
 
 dependencies {
 
+    implementation(platform("io.github.Rosemoe.sora-editor:bom:0.23.5"))
+    implementation("io.github.Rosemoe.sora-editor:editor")
+    implementation("io.github.Rosemoe.sora-editor:language-java")
+
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
