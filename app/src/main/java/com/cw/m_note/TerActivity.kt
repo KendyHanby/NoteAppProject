@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.widget.Toast
 import com.cw.m_note.databinding.ActivityTerBinding
-import io.github.rosemoe.sora.langs.java.JavaLanguage
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,7 +20,6 @@ class TerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         bind = ActivityTerBinding.inflate(layoutInflater)
         setContentView(bind.root)
-        bind.editor.setEditorLanguage(JavaLanguage())
         bind.terText.setOnClickListener {
             Retrofit.Builder().baseUrl("https://example.com/").addConverterFactory(GsonConverterFactory.create()).build()
                 .create(Ser::class.java).get().enqueue(object : Callback<ResponseBody> {
