@@ -16,25 +16,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="34">
         <activity
-            android:name=".NoteEditorActivity"
-            android:exported="false" />
-        <activity
-            android:label="Sora Editor"
-            android:name=".TerActivity"
-            android:exported="false" />
-        <activity
-            android:name=".LandingActivity"
+            android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.MNote.Fullscreen">
+            android:theme="@style/Theme.MNote">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
     </application>
 
 </manifest>

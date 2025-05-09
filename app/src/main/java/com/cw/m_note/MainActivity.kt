@@ -23,52 +23,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setSupportActionBar(binding.toolbar)
-
-        // setup tab layout
-        val notes = binding.mainTab.newTab().setText("Notes").setId(View.generateViewId())
-        val tasks = binding.mainTab.newTab().setText("Tasks").setId(View.generateViewId())
-        binding.mainTab.addTab(notes)
-        binding.mainTab.addTab(tasks)
-        binding.mainTab.addOnTabSelectedListener(object : OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                binding.mainPager.currentItem =
-                    if (tab.id == notes.id) {
-                        0
-                    } else {
-                        1
-                    }
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab) {
-
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab) {
-
-            }
-        })
-
-        // setup FAB with app bar layout
-        binding.appBarLayout.addOnOffsetChangedListener { _, verticalOffset ->
-            if (verticalOffset == 0 && binding.mainFab.isShown.not()) {
-                binding.mainFab.show()
-            }
+        
+        binding.btnMy.setOnClickListener {
+        	Toast.makeText(applicationContext, "Clicked", Toast.LENGTH_SHORT).show()
         }
-
-        // set up pager
-        binding.mainPager.adapter = PageAdapter(this)
-        binding.mainPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                binding.mainTab.selectTab(
-                    if (position == 0) {
-                        notes
-                    } else {
-                        tasks
-                    }
-                )
-            }
-        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -79,7 +37,6 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(menuItem: MenuItem): Boolean {
         super.onOptionsItemSelected(menuItem)
         if (menuItem.title == "Item") {
-            startActivity(Intent(this, TerActivity::class.java))
             return true
         }
         return false
